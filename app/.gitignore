@@ -1,1 +1,15 @@
 /build
+*.iml
+*.eml
+*.ipr
+*.iws
+.idea
+*.diff
+.settings
+.DS_Store
+logs/*
+classes/*
+out
+gen
+target
+bin
