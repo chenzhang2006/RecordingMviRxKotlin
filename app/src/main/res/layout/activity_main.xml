@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.chenzhang.recording_mvi_rx_kotlin.MainActivity">
+        tools:context="com.chenzhang.recording_mvi_rx_kotlin.com.chenzhang.mvi.MainActivity">
 
     <android.support.design.widget.AppBarLayout
             android:layout_height="wrap_content"
