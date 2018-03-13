@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         bind()
     }
 
-    override fun intents(): Observable<RecordingsIntent> = RxView.clicks(loadButton).map { RecordingsIntent.LoadRecordingsIntent }
+    override fun intents(): Observable<RecordingsIntent> = RxView.clicks(refreshButton).map { RecordingsIntent.LoadRecordingsIntent }
 
     override fun render(state: RecordingsViewState) {
         if (state.isLoading) {

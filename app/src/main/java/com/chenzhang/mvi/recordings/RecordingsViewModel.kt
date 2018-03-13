@@ -2,12 +2,12 @@ package com.chenzhang.mvi.recordings
 
 import android.arch.lifecycle.ViewModel
 import com.chenzhang.mvi.base.MviViewModel
-import com.chenzhang.mvi.data.Recording
+import com.chenzhang.mvi.recordings.RecordingsResult.LoadingFailure
+import com.chenzhang.mvi.recordings.RecordingsResult.LoadingInProgress
+import com.chenzhang.mvi.recordings.RecordingsResult.LoadingSuccess
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit.SECONDS
 
 class RecordingsViewModel : ViewModel(), MviViewModel<RecordingsIntent, RecordingsViewState> {
 
@@ -21,10 +21,11 @@ class RecordingsViewModel : ViewModel(), MviViewModel<RecordingsIntent, Recordin
 
     private fun bindIntent(): Observable<RecordingsViewState> {
         return intentsSubject
-                .map { RecordingsViewState(recordings = listOf(Recording("100", "Hello", "Introduction to ReactiveX"))) }
-                .delay(2, SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { println(it.javaClass) }
+                .processRecordingIntent()
+                .scan(RecordingsViewState.initial(), reducer)
+                .replay(1)
+                .autoConnect()
     }
 
     override fun processIntents(intents: Observable<RecordingsIntent>) {
@@ -32,5 +33,15 @@ class RecordingsViewModel : ViewModel(), MviViewModel<RecordingsIntent, Recordin
     }
 
     override fun states(): Observable<RecordingsViewState> = stateObservable
+
+    companion object {
+        private val reducer = BiFunction { previousState: RecordingsViewState, result: RecordingsResult ->
+            when (result) {
+                is LoadingSuccess -> previousState.copy(false, result.recordings)
+                is LoadingFailure -> previousState.copy(false, error = result.error)
+                is LoadingInProgress -> previousState.copy(true)
+            }
+        }
+    }
 
 }
