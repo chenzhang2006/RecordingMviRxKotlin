@@ -22,6 +22,7 @@ class RecordingsViewModel : ViewModel(), MviViewModel<RecordingsIntent, Recordin
 
     private fun bindIntent(): Observable<RecordingsViewState> {
         return intentsSubject
+                .map(this::actionMappedFromIntent)
                 .processRecordingIntent()
                 .doOnNext { Log.d("RecordingViewModel","track $it") }
                 .scan(RecordingsViewState.initial(), reducer)
@@ -34,6 +35,16 @@ class RecordingsViewModel : ViewModel(), MviViewModel<RecordingsIntent, Recordin
     }
 
     override fun states(): Observable<RecordingsViewState> = stateObservable
+
+    /**
+     * Map MviIntent to Business Logic's MviAction
+     */
+    private fun actionMappedFromIntent(intent: RecordingsIntent): RecordingsAction {
+        return when (intent) {
+            is RecordingsIntent.InitialIntent, is RecordingsIntent.RefreshIntent ->
+                    RecordingsAction.LoadRecordingsAction
+        }
+    }
 
     companion object {
         private val reducer = BiFunction { previousState: RecordingsViewState, result: RecordingsResult ->

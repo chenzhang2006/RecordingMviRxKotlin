@@ -44,9 +44,14 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
     }
 
     override fun intents(): Observable<RecordingsIntent> =
-            RxView.clicks(refreshButton)
+            Observable.merge(
+                    initialIntent(),
+                    refreshIntent())
+
+    private fun initialIntent() = Observable.just(RecordingsIntent.InitialIntent)
+    private fun refreshIntent() = RxView.clicks(refreshButton)
                     .doOnNext { Log.d("MainActivity", "track $it") }
-                    .map { RecordingsIntent.LoadRecordingsIntent }
+            .map { RecordingsIntent.RefreshIntent }
 
     override fun render(state: RecordingsViewState) {
         //initial viewState used by Rx scan()/reducer

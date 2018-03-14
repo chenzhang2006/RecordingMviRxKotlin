@@ -5,11 +5,11 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-fun Observable<RecordingsIntent>.processRecordingIntent(): Observable<RecordingsResult> =
-    ofType(RecordingsIntent.LoadRecordingsIntent::class.java).loadRecordings()
+fun Observable<RecordingsAction>.processRecordingIntent(): Observable<RecordingsResult> =
+    ofType(RecordingsAction.LoadRecordingsAction::class.java).loadRecordings()
 
 
-fun Observable<RecordingsIntent.LoadRecordingsIntent>.loadRecordings(): Observable<RecordingsResult> =
+fun Observable<RecordingsAction.LoadRecordingsAction>.loadRecordings(): Observable<RecordingsResult> =
         flatMap {
             ApiRepository.loadRecordings()
                     .toObservable()

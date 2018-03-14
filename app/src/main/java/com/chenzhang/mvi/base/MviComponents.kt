@@ -33,6 +33,11 @@ interface MviView<I : MviIntent, in S : MviViewState> {
 }
 
 /**
+ * Business layer action; Mapped from MviIntent(UI layer)
+ */
+interface MviAction
+
+/**
  * Result from processed business Logic
  */
 interface MviResult
