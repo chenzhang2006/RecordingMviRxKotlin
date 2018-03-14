@@ -10,14 +10,16 @@ fun Observable<RecordingsIntent>.processRecordingIntent(): Observable<Recordings
 
 
 fun Observable<RecordingsIntent.LoadRecordingsIntent>.loadRecordings(): Observable<RecordingsResult> =
-        ApiRepository.loadRecordings()
-                .toObservable()
-                .map { t: List<Recording> ->
-                    RecordingsResult.LoadingSuccess(t)
-                }
-                .cast(RecordingsResult::class.java)
-                .onErrorReturn(RecordingsResult::LoadingFailure)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .startWith(RecordingsResult.LoadingInProgress)
+        flatMap {
+            ApiRepository.loadRecordings()
+                    .toObservable()
+                    .map { t: List<Recording> ->
+                        RecordingsResult.LoadingSuccess(t)
+                    }
+                    .cast(RecordingsResult::class.java)
+                    .onErrorReturn(RecordingsResult::LoadingFailure)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .startWith(RecordingsResult.LoadingInProgress)
+        }
 
