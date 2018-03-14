@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -42,21 +43,26 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         bind()
     }
 
-    override fun intents(): Observable<RecordingsIntent> = RxView.clicks(refreshButton).map { RecordingsIntent.LoadRecordingsIntent }
+    override fun intents(): Observable<RecordingsIntent> =
+            RxView.clicks(refreshButton)
+                    .doOnNext { Log.d("MainActivity", "track $it") }
+                    .map { RecordingsIntent.LoadRecordingsIntent }
 
     override fun render(state: RecordingsViewState) {
         if (state.isLoading) {
             progressBar.visibility = View.VISIBLE
+            helloText.visibility = View.INVISIBLE
         } else {
-            progressBar.visibility = View.GONE
+            progressBar.visibility = View.INVISIBLE
+            helloText.visibility = View.VISIBLE
             helloText.text = if (state.recordings.isEmpty()) state.error.toString() else state.recordings.toString()
         }
 
     }
 
     private fun bind() {
-        viewModel.processIntents(intents())
         disposables.add(viewModel.states().subscribe(this::render))
+        viewModel.processIntents(intents())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -1,6 +1,7 @@
 package com.chenzhang.mvi.recordings
 
 import android.arch.lifecycle.ViewModel
+import android.util.Log
 import com.chenzhang.mvi.base.MviViewModel
 import com.chenzhang.mvi.recordings.RecordingsResult.LoadingFailure
 import com.chenzhang.mvi.recordings.RecordingsResult.LoadingInProgress
@@ -21,8 +22,8 @@ class RecordingsViewModel : ViewModel(), MviViewModel<RecordingsIntent, Recordin
 
     private fun bindIntent(): Observable<RecordingsViewState> {
         return intentsSubject
-                .doOnNext { println(it.javaClass) }
                 .processRecordingIntent()
+                .doOnNext { Log.d("RecordingViewModel","track $it") }
                 .scan(RecordingsViewState.initial(), reducer)
                 .replay(1)
                 .autoConnect()
