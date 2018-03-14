@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
                     .map { RecordingsIntent.LoadRecordingsIntent }
 
     override fun render(state: RecordingsViewState) {
+        //initial viewState used by Rx scan()/reducer
+        if (state == RecordingsViewState.initial()) return
+
         if (state.isLoading) {
             progressBar.visibility = View.VISIBLE
             helloText.visibility = View.INVISIBLE
