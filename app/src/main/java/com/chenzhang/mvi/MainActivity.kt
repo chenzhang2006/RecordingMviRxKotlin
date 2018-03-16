@@ -11,6 +11,7 @@ import android.view.View
 import com.chenzhang.mvi.base.MviView
 import com.chenzhang.mvi.recordings.RecordingsIntent
 import com.chenzhang.mvi.recordings.RecordingsViewModel
+import com.chenzhang.mvi.recordings.RecordingsViewModelFactory
 import com.chenzhang.mvi.recordings.RecordingsViewState
 import com.chenzhang.recording_mvi_rx_kotlin.R
 import com.chenzhang.recording_mvi_rx_kotlin.R.id
@@ -20,16 +21,24 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsViewState> {
 
+    @Inject
+    lateinit var recordingsViewModelFactory: RecordingsViewModelFactory
+
     private val disposables = CompositeDisposable()
     private val viewModel: RecordingsViewModel by lazy {
-        ViewModelProviders.of(this).get(RecordingsViewModel::class.java)
+        ViewModelProviders
+                .of(this, recordingsViewModelFactory)
+                .get(RecordingsViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MviApplication.appComponent.inject(this)
+
         setContentView(layout.activity_main)
         setSupportActionBar(toolbar)
 

@@ -1,25 +1,54 @@
 package com.chenzhang.mvi.recordings
 
 import com.chenzhang.mvi.data.Recording
+import com.chenzhang.mvi.recordings.RecordingsAction.DeleteRecordingAction
+import com.chenzhang.mvi.recordings.RecordingsAction.LoadRecordingsAction
+import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult
 import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-fun Observable<RecordingsAction>.processRecordingIntent(): Observable<RecordingsResult> =
-    ofType(RecordingsAction.LoadRecordingsAction::class.java).loadRecordings()
+class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
 
+    val actionProcessor =
+            ObservableTransformer<RecordingsAction, RecordingsResult> { actions ->
+                //publish to ConnectableObservable so upstream is subscribed only once and multicast to observers
+                actions.publish { actionObserable ->
+                    Observable.merge<RecordingsResult>(
+                            actionObserable.ofType(RecordingsAction.LoadRecordingsAction::class.java).compose(loadRecordingsProcessor),
+                            actionObserable.ofType(RecordingsAction.DeleteRecordingAction::class.java).compose(deleteRecordingProcessor)
+                    )
+                }
+            }
 
-fun Observable<RecordingsAction.LoadRecordingsAction>.loadRecordings(): Observable<RecordingsResult> =
-        flatMap {
-            ApiRepository.loadRecordings()
-                    .toObservable()
-                    .map { t: List<Recording> ->
-                        RecordingsResult.LoadingSuccess(t)
-                    }
-                    .cast(RecordingsResult::class.java)
-                    .onErrorReturn(RecordingsResult::LoadingFailure)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .startWith(RecordingsResult.LoadingInProgress)
-        }
+    private val loadRecordingsProcessor =
+            ObservableTransformer<LoadRecordingsAction, LoadingResult> { action ->
+                action.flatMap {
+                    apiRepository.loadRecordings()
+                            .toObservable()
+                            .map { t: List<Recording> ->
+                                LoadingResult.LoadingSuccess(t)
+                            }
+                            .cast(LoadingResult::class.java)
+                            .onErrorReturn(LoadingResult::LoadingFailure)
+                            .startWith(LoadingResult.LoadingInProgress)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                }
+            }
+
+    //TODO
+    private val deleteRecordingProcessor =
+            ObservableTransformer<DeleteRecordingAction, LoadingResult> { action ->
+                action.flatMap {
+                    apiRepository.loadRecordings()
+                            .toObservable()
+                            .map { r: List<Recording> ->
+                                LoadingResult.LoadingSuccess(r)
+                            }
+                }
+            }
+
+}
 

@@ -3,14 +3,17 @@ package com.chenzhang.mvi.recordings
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.chenzhang.mvi.base.MviViewModel
-import com.chenzhang.mvi.recordings.RecordingsResult.LoadingFailure
-import com.chenzhang.mvi.recordings.RecordingsResult.LoadingInProgress
-import com.chenzhang.mvi.recordings.RecordingsResult.LoadingSuccess
+import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult
+import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult.LoadingFailure
+import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult.LoadingInProgress
+import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult.LoadingSuccess
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 
-class RecordingsViewModel : ViewModel(), MviViewModel<RecordingsIntent, RecordingsViewState> {
+class RecordingsViewModel(
+        private val recordingsIntentProcessors: RecordingsIntentProcessors
+) : ViewModel(), MviViewModel<RecordingsIntent, RecordingsViewState> {
 
     /**
      * Proxy subject used to keep the stream alive even after the UI gets recycled.
@@ -23,7 +26,7 @@ class RecordingsViewModel : ViewModel(), MviViewModel<RecordingsIntent, Recordin
     private fun bindIntent(): Observable<RecordingsViewState> {
         return intentsSubject
                 .map(this::actionMappedFromIntent)
-                .processRecordingIntent()
+                .compose(recordingsIntentProcessors.actionProcessor)
                 .doOnNext { Log.d("RecordingViewModel","track $it") }
                 .scan(RecordingsViewState.initial(), reducer)
                 .replay(1)
@@ -49,9 +52,11 @@ class RecordingsViewModel : ViewModel(), MviViewModel<RecordingsIntent, Recordin
     companion object {
         private val reducer = BiFunction { previousState: RecordingsViewState, result: RecordingsResult ->
             when (result) {
-                is LoadingSuccess -> previousState.copy(false, result.recordings)
-                is LoadingFailure -> previousState.copy(false, error = result.error)
-                is LoadingInProgress -> previousState.copy(true)
+                is LoadingResult -> when (result) {
+                    is LoadingSuccess -> previousState.copy(false, result.recordings)
+                    is LoadingFailure -> previousState.copy(false, error = result.error)
+                    is LoadingInProgress -> previousState.copy(true)
+                }
             }
         }
     }

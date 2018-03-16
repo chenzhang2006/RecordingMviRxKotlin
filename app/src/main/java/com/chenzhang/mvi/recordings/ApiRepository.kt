@@ -5,7 +5,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.concurrent.TimeUnit.SECONDS
 
-object ApiRepository {
+class ApiRepository {
     fun loadRecordings(): Single<List<Recording>> =
             Observable.fromIterable(listOf(
                     Recording("100", "Hello", "Introduction to ReactiveX"),
