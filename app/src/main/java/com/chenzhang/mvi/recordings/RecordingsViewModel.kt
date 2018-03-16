@@ -25,6 +25,7 @@ class RecordingsViewModel(
 
     private fun bindIntent(): Observable<RecordingsViewState> {
         return intentsSubject
+                .initialFilter()
                 .map(this::actionMappedFromIntent)
                 .compose(recordingsIntentProcessors.actionProcessor)
                 .doOnNext { Log.d("RecordingViewModel","track $it") }
@@ -32,6 +33,15 @@ class RecordingsViewModel(
                 .replay(1)
                 .autoConnect()
     }
+
+    //Take only the 1st initial intent to avoid reloading data on config change(because hotObservable.replay(1) already)
+    private fun Observable<RecordingsIntent>.initialFilter() =
+            publish { intent ->
+                Observable.merge(
+                        intent.ofType(RecordingsIntent.InitialIntent::class.java).take(1),
+                        intent.filter { !RecordingsIntent.InitialIntent::class.java.isInstance(it) }
+                )
+            }
 
     override fun processIntents(intents: Observable<RecordingsIntent>) {
         intents.subscribe(intentsSubject)
