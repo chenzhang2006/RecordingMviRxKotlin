@@ -55,5 +55,9 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
                             .observeOn(AndroidSchedulers.mainThread())
                 }
             }
+
+    fun uncleared() {
+        //TODO: cancel callbacks to avoid memory leak, if applicable
+    }
 }
 

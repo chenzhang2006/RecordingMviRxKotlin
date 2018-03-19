@@ -6,8 +6,8 @@ import com.chenzhang.mvi.base.MviViewModel
 import com.chenzhang.mvi.recordings.RecordingsAction.DeleteRecordingAction
 import com.chenzhang.mvi.recordings.RecordingsIntent.DeleteIntent
 import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult
-import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult.DeleteInProgress
 import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult.DeleteFailure
+import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult.DeleteInProgress
 import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult.DeleteSuccess
 import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult
 import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult.LoadingFailure
@@ -65,6 +65,10 @@ class RecordingsViewModel(
             is DeleteIntent ->
                 DeleteRecordingAction(intent.position)
         }
+    }
+
+    override fun onCleared() {
+        recordingsIntentProcessors.uncleared()
     }
 
     companion object {
