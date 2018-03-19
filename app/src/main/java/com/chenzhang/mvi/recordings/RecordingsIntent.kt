@@ -6,4 +6,5 @@ sealed class RecordingsIntent : MviIntent {
     //InitialIntent for the very first intent when screen starts(what to show on screen first)
     object InitialIntent : RecordingsIntent()
     object RefreshIntent : RecordingsIntent()
+    data class DeleteIntent(val position: Int) : RecordingsIntent()
 }

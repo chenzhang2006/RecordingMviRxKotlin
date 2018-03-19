@@ -4,5 +4,5 @@ import com.chenzhang.mvi.base.MviAction
 
 sealed class RecordingsAction : MviAction {
     object LoadRecordingsAction : RecordingsAction()
-    data class DeleteRecordingAction(val recordingId: String) : RecordingsAction()
+    data class DeleteRecordingAction(val position: Int) : RecordingsAction()
 }

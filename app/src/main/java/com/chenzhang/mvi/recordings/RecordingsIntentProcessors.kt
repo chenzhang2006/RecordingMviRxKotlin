@@ -3,6 +3,7 @@ package com.chenzhang.mvi.recordings
 import com.chenzhang.mvi.data.Recording
 import com.chenzhang.mvi.recordings.RecordingsAction.DeleteRecordingAction
 import com.chenzhang.mvi.recordings.RecordingsAction.LoadRecordingsAction
+import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult
 import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
@@ -38,17 +39,21 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
                 }
             }
 
-    //TODO
     private val deleteRecordingProcessor =
-            ObservableTransformer<DeleteRecordingAction, LoadingResult> { action ->
-                action.flatMap {
-                    apiRepository.loadRecordings()
+            ObservableTransformer<DeleteRecordingAction, DeleteResult> { action ->
+                action.flatMap { a ->
+                    apiRepository.deleteRecording(a.position)
+                            .andThen(apiRepository.loadRecordings())
                             .toObservable()
                             .map { r: List<Recording> ->
-                                LoadingResult.LoadingSuccess(r)
+                                DeleteResult.DeleteSuccess(r)
                             }
+                            .cast(DeleteResult::class.java)
+                            .onErrorReturn(DeleteResult::DeleteFailure)
+                            .startWith(DeleteResult.DeleteInProgress)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
                 }
             }
-
 }
 

@@ -3,6 +3,12 @@ package com.chenzhang.mvi.recordings
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.chenzhang.mvi.base.MviViewModel
+import com.chenzhang.mvi.recordings.RecordingsAction.DeleteRecordingAction
+import com.chenzhang.mvi.recordings.RecordingsIntent.DeleteIntent
+import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult
+import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult.DeleteInProgress
+import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult.DeleteFailure
+import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult.DeleteSuccess
 import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult
 import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult.LoadingFailure
 import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult.LoadingInProgress
@@ -56,6 +62,8 @@ class RecordingsViewModel(
         return when (intent) {
             is RecordingsIntent.InitialIntent, is RecordingsIntent.RefreshIntent ->
                     RecordingsAction.LoadRecordingsAction
+            is DeleteIntent ->
+                DeleteRecordingAction(intent.position)
         }
     }
 
@@ -66,6 +74,11 @@ class RecordingsViewModel(
                     is LoadingSuccess -> previousState.copy(false, result.recordings)
                     is LoadingFailure -> previousState.copy(false, error = result.error)
                     is LoadingInProgress -> previousState.copy(true)
+                }
+                is DeleteResult -> when (result) {
+                    is DeleteSuccess -> previousState.copy(false, result.recordings)
+                    is DeleteFailure -> previousState.copy(false, error = result.error)
+                    is DeleteInProgress -> previousState.copy(true)
                 }
             }
         }

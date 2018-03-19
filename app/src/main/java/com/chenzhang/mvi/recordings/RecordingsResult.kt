@@ -9,4 +9,10 @@ sealed class RecordingsResult : MviResult {
         data class LoadingSuccess(val recordings: List<Recording>) : LoadingResult()
         data class LoadingFailure(val error: Throwable) : LoadingResult()
     }
+
+    sealed class DeleteResult : RecordingsResult() {
+        data class DeleteSuccess(val recordings: List<Recording>) : DeleteResult()
+        data class DeleteFailure(val error: Throwable) : DeleteResult()
+        object DeleteInProgress : DeleteResult()
+    }
 }
