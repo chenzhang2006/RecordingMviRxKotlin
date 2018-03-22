@@ -3,6 +3,7 @@
 *.eml
 *.ipr
 *.iws
+.idea/
 .idea
 *.diff
 .settings
