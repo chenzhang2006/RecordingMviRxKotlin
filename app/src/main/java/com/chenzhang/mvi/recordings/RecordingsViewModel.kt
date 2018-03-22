@@ -1,7 +1,6 @@
 package com.chenzhang.mvi.recordings
 
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 import com.chenzhang.mvi.base.MviViewModel
 import com.chenzhang.mvi.recordings.RecordingsAction.DeleteRecordingAction
 import com.chenzhang.mvi.recordings.RecordingsIntent.DeleteIntent
@@ -34,7 +33,6 @@ class RecordingsViewModel(
                 .initialFilter()
                 .map(this::actionMappedFromIntent)
                 .compose(recordingsIntentProcessors.actionProcessor)
-                .doOnNext { Log.d("RecordingViewModel","track $it") }
                 .scan(RecordingsViewState.initial(), reducer)
                 .replay(1)
                 .autoConnect()
