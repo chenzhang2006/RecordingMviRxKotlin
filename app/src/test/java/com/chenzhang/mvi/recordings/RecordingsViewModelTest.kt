@@ -18,7 +18,12 @@ import org.junit.runner.RunWith
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 
-
+/**
+ * I used jMockit for mocking framework. Mockito is fine, too, but with following gotcha:
+ * 1. Need special setup for mocking "closed" classes, which is the case by default in Kotlin.
+ *    ref: http://hadihariri.com/2016/10/04/Mocking-Kotlin-With-Mockito/
+ * 2. Reserved keywords conflict with Kotlin, e.g. "when", so they need to be escaped.
+ */
 @RunWith(JMockit::class)
 class RecordingsViewModelTest {
 
