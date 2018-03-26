@@ -7,3 +7,17 @@
 /build
 /captures
 .externalNativeBuild
+/build
+*.eml
+*.ipr
+*.iws
+.idea/
+.idea
+*.diff
+.settings
+logs/*
+classes/*
+out
+gen
+target
+bin
