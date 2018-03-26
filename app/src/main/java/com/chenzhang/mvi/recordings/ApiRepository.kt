@@ -17,8 +17,8 @@ class ApiRepository {
                     .delay(2, SECONDS)
                     .toList()
 
-    fun deleteRecording(position: Int): Completable {
-        recordings.removeAt(position)
+    fun deleteRecording(recording: Recording): Completable {
+        recordings.remove(recording)
         return Completable.complete()
     }
 }

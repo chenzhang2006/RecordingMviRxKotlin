@@ -61,7 +61,7 @@ class RecordingsViewModel(
             is RecordingsIntent.InitialIntent, is RecordingsIntent.RefreshIntent ->
                     RecordingsAction.LoadRecordingsAction
             is DeleteIntent ->
-                DeleteRecordingAction(intent.position)
+                DeleteRecordingAction(intent.recording)
         }
     }
 

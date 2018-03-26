@@ -9,10 +9,16 @@ import android.view.ViewGroup
 import com.chenzhang.mvi.data.Recording
 import com.chenzhang.mvi.view.RecordingsAdapter.ItemViewHolder
 import com.chenzhang.recording_mvi_rx_kotlin.R
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.recording_item.view.*
 
 class RecordingsAdapter : RecyclerView.Adapter<ItemViewHolder>() {
     private var items: MutableList<Pair<Recording, Boolean>> = mutableListOf()
+    private val deleteSubject = PublishSubject.create<Recording>()
+
+    val deleteObservable: Observable<Recording>
+        get() = deleteSubject
 
     fun setItems(data: List<Recording>) {
         items = data.map { it to false }.toMutableList()
@@ -36,6 +42,8 @@ class RecordingsAdapter : RecyclerView.Adapter<ItemViewHolder>() {
                 items[layoutPosition] = items[layoutPosition].run { first to !second }
                 notifyItemChanged(layoutPosition)
             }
+
+            itemView.delete.setOnClickListener { deleteSubject.onNext(items[layoutPosition].first) }
         }
 
         fun bind(itemData: Pair<Recording, Boolean>) {

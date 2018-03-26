@@ -42,7 +42,7 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
     private val deleteRecordingProcessor =
             ObservableTransformer<DeleteRecordingAction, DeleteResult> { action ->
                 action.flatMap { a ->
-                    apiRepository.deleteRecording(a.position)
+                    apiRepository.deleteRecording(a.recording)
                             .andThen(apiRepository.loadRecordings())
                             .toObservable()
                             .map { r: List<Recording> ->

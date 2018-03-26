@@ -56,9 +56,11 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         bind()
     }
 
-    override fun intents(): Observable<RecordingsIntent> = initialIntent().cast(RecordingsIntent::class.java)
+    override fun intents(): Observable<RecordingsIntent> = Observable.merge(initialIntent(), deleteIntent())
 
     private fun initialIntent() = Observable.just(RecordingsIntent.InitialIntent)
+
+    private fun deleteIntent() = recordingsAdapter.deleteObservable.map { recording -> RecordingsIntent.DeleteIntent(recording) }
 
     override fun render(state: RecordingsViewState) {
         //initial viewState used by Rx scan()/reducer
