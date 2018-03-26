@@ -8,8 +8,9 @@ import java.util.concurrent.TimeUnit.SECONDS
 
 class ApiRepository {
     private val recordings: MutableList<Recording> =
-            mutableListOf(Recording("100", "Hello", "Introduction to ReactiveX"),
-                    Recording("101", "World"))
+            mutableListOf(Recording("101", "Recording 1", "Movie 1"),
+                    Recording("102", "Recording 2", "Movie 2"),
+                    Recording("103", "Recording 3", "Movie 3"))
 
     fun loadRecordings(): Single<List<Recording>> =
             Observable.fromIterable(recordings)
