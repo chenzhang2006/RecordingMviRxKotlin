@@ -13,6 +13,7 @@ class LoggerFactoryForTest{
                     "%d{ABSOLUTE} %5p %c{1}:%L - %m%n"), ConsoleAppender.SYSTEM_OUT)
             console.name = "console"
 
+            rootLogger.removeAllAppenders()
             rootLogger.addAppender(console)
             rootLogger.level = Level.INFO
         }

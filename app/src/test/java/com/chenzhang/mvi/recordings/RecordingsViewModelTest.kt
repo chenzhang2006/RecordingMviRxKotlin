@@ -12,6 +12,7 @@ import io.reactivex.plugins.RxJavaPlugins
 import mockit.Injectable
 import mockit.NonStrictExpectations
 import mockit.integration.junit4.JMockit
+import org.apache.log4j.Logger
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,6 +34,7 @@ class RecordingsViewModelTest {
     private lateinit var viewModel: RecordingsViewModel
     private lateinit var testObserver: TestObserver<RecordingsViewState>
     private lateinit var recordings: List<Recording>
+    private lateinit var LOG: Logger
 
     @Before
     fun setup() {
@@ -45,6 +47,7 @@ class RecordingsViewModelTest {
         )
         setupTestScheduler()
         LoggerFactoryForTest.configure()
+        LOG = Logger.getLogger(this.javaClass)
     }
 
     @Test
@@ -58,6 +61,7 @@ class RecordingsViewModelTest {
         viewModel.processIntents(Observable.just(RecordingsIntent.InitialIntent))
         testObserver.assertValueAt(1, { s: RecordingsViewState -> s.isLoading })
         testObserver.assertValueAt(2, { s: RecordingsViewState -> !s.isLoading && s.recordings.size == 3 })
+        LOG.info("test finished")
     }
 
     /**
