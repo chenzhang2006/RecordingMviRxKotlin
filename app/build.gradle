@@ -48,6 +48,10 @@ dependencies {
     implementation "com.google.dagger:dagger:2.15"
     kapt "com.google.dagger:dagger-compiler:2.15"
 
+    //Logging
+    implementation "de.mindpipe.android:android-logging-log4j:1.0.3"
+    implementation "log4j:log4j:1.2.17"
+
     //unit test
     testImplementation 'org.jmockit:jmockit:1.22'
     testImplementation 'junit:junit:4.12'

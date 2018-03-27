@@ -27,10 +27,13 @@ class RecordingsViewModel(
      */
     private val intentsSubject: PublishSubject<RecordingsIntent> = PublishSubject.create()
     private val stateObservable: Observable<RecordingsViewState> = bindIntent()
+    private val LOG = com.chenzhang.mvi.utils.LoggerFactory.getLogger(RecordingsViewModel::class.java)
 
     private fun bindIntent(): Observable<RecordingsViewState> {
         return intentsSubject
+                .doOnNext { LOG.debug("raw intent $it") }
                 .initialFilter()
+                .doOnNext { LOG.debug("filtered intent $it") }
                 .map(this::actionMappedFromIntent)
                 .compose(recordingsIntentProcessors.actionProcessor)
                 .scan(RecordingsViewState.initial(), reducer)
