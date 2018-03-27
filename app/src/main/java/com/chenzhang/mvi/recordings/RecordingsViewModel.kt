@@ -15,6 +15,7 @@ import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult.LoadingSucces
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
+import org.apache.log4j.Logger
 
 class RecordingsViewModel(
         private val recordingsIntentProcessors: RecordingsIntentProcessors
@@ -27,7 +28,7 @@ class RecordingsViewModel(
      */
     private val intentsSubject: PublishSubject<RecordingsIntent> = PublishSubject.create()
     private val stateObservable: Observable<RecordingsViewState> = bindIntent()
-    private val LOG = com.chenzhang.mvi.utils.LoggerFactory.getLogger(RecordingsViewModel::class.java)
+    private val LOG = Logger.getLogger(this::class.java)
 
     private fun bindIntent(): Observable<RecordingsViewState> {
         return intentsSubject

@@ -46,7 +46,7 @@ class RecordingsViewModelTest {
                 Recording("300", "title300", "disc300", false)
         )
         setupTestScheduler()
-        LoggerFactoryForTest.configure()
+        Log4JConfiguratorForTest.configure()
         LOG = Logger.getLogger(this.javaClass)
     }
 

@@ -1,4 +1,4 @@
-package com.chenzhang.mvi.utils
+package com.chenzhang.mvi.application
 
 import de.mindpipe.android.logging.log4j.LogCatAppender
 import de.mindpipe.android.logging.log4j.LogConfigurator
@@ -6,9 +6,9 @@ import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.apache.log4j.PatternLayout
 
-class LoggerFactory {
+class Log4JConfigurator {
     companion object {
-        fun <T> getLogger(clazz: Class<T>): Logger {
+        fun configureLogging() {
             val logConfigurator = LogConfigurator()
             logConfigurator.rootLevel = Level.DEBUG
             logConfigurator.isUseFileAppender = false
@@ -27,8 +27,6 @@ class LoggerFactory {
                     appender.tagLayout = PatternLayout("%c{1}") // Simple class name (not fully qualified)
                 }
             }
-
-            return Logger.getLogger(clazz)
         }
     }
 }
