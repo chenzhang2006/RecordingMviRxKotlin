@@ -9,37 +9,22 @@
         android:padding="16dp">
 
     <TextView
-            android:id="@+id/recordingTitle"
+            android:id="@+id/collapsedRecordingTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/delete"
+            app:layout_constraintEnd_toStartOf="@+id/collapsedDelete"
             android:layout_marginEnd="16dp"
             android:textSize="24dp"
             />
 
-    <TextView
-            android:id="@+id/recordingDesc"
-            android:text="TextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recordingTitle"
-            android:layout_marginTop="16dp"
-            app:layout_goneMarginTop="0dp"
-            android:textSize="20dp"
-            />
-
     <ImageView
-            android:id="@+id/delete"
+            android:id="@+id/collapsedDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/recordingTitle"
-            app:layout_constraintBottom_toBottomOf="@+id/recordingTitle"
+            app:layout_constraintTop_toTopOf="@+id/collapsedRecordingTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/collapsedRecordingTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_remove" />
 </android.support.constraint.ConstraintLayout>
