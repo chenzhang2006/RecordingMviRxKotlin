@@ -15,9 +15,13 @@ import kotlinx.android.synthetic.main.recording_item_expanded.view.*
 class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: MutableList<Pair<Recording, Boolean>> = mutableListOf()
     private val deleteSubject = PublishSubject.create<Recording>()
+    private val playSubject = PublishSubject.create<Recording>()
 
     val deleteObservable: Observable<Recording>
         get() = deleteSubject
+
+    val playObservable: Observable<Recording>
+        get() = playSubject
 
     fun setItems(data: List<Recording>) {
         items = data.map { it to false }.toMutableList()
@@ -60,6 +64,7 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             itemView.expandedDelete.setOnClickListener { deleteSubject.onNext(items[layoutPosition].first) }
+            itemView.expandedPlay.setOnClickListener { playSubject.onNext(items[layoutPosition].first) }
         }
 
         fun bind(recording: Recording) {

@@ -78,6 +78,10 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
     private fun bind() {
         disposables.add(viewModel.states().subscribe(this::render))
         viewModel.processIntents(intents())
+
+        recordingsAdapter.playObservable.subscribe { recording ->
+            Snackbar.make(content_main_container, getString(R.string.recording_play_message, recording.title), Snackbar.LENGTH_LONG).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
