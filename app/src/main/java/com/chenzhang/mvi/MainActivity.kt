@@ -19,10 +19,12 @@ import com.chenzhang.mvi.view.RecordingsAdapter
 import com.chenzhang.recording_mvi_rx_kotlin.R
 import com.chenzhang.recording_mvi_rx_kotlin.R.id
 import com.chenzhang.recording_mvi_rx_kotlin.R.layout
+import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsViewState> {
@@ -45,11 +47,6 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         setContentView(layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
         with(recyclerView) {
             layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
             adapter = recordingsAdapter
@@ -58,11 +55,15 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         bind()
     }
 
-    override fun intents(): Observable<RecordingsIntent> = Observable.merge(initialIntent(), deleteIntent())
+    override fun intents(): Observable<RecordingsIntent> = Observable.merge(initialIntent(), deleteIntent(), addIntent())
 
     private fun initialIntent() = Observable.just(RecordingsIntent.InitialIntent)
 
     private fun deleteIntent() = recordingsAdapter.deleteObservable.map { recording -> RecordingsIntent.DeleteIntent(recording) }
+
+    private fun addIntent() = RxView.clicks(fab).debounce(200, MILLISECONDS).map {
+        RecordingsIntent.AddIntent
+    }
 
     @TargetApi(VERSION_CODES.N)
     override fun render(state: RecordingsViewState) {

@@ -1,6 +1,7 @@
 package com.chenzhang.mvi.recordings
 
 import com.chenzhang.mvi.data.Recording
+import com.chenzhang.mvi.recordings.RecordingsAction.AddRecordingAction
 import com.chenzhang.mvi.recordings.RecordingsAction.DeleteRecordingAction
 import com.chenzhang.mvi.recordings.RecordingsAction.LoadRecordingsAction
 import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult
@@ -19,7 +20,8 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
                 actions.publish { actionObserable ->
                     Observable.merge<RecordingsResult>(
                             actionObserable.ofType(RecordingsAction.LoadRecordingsAction::class.java).compose(loadRecordingsProcessor),
-                            actionObserable.ofType(RecordingsAction.DeleteRecordingAction::class.java).compose(deleteRecordingProcessor)
+                            actionObserable.ofType(RecordingsAction.DeleteRecordingAction::class.java).compose(deleteRecordingProcessor),
+                            actionObserable.ofType(RecordingsAction.AddRecordingAction::class.java).compose(addRecordingProcessor)
                     )
                 }
             }
@@ -58,8 +60,25 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
                 }
             }
 
+    private val addRecordingProcessor =
+            ObservableTransformer<AddRecordingAction, LoadingResult> { action ->
+                action.flatMap {
+                    apiRepository.addRecordingThenLoad()
+                            .toObservable()
+                            .zipWith(apiRepository.loadRecorderUsage())
+                            .map { pair: Pair<List<Recording>, Int> ->
+                                LoadingResult.LoadingSuccess(pair.first, pair.second)
+                            }
+                            .cast(LoadingResult::class.java)
+                            .onErrorReturn(LoadingResult::LoadingFailure)
+                            .startWith(LoadingResult.LoadingInProgress)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                }
+            }
+
     fun uncleared() {
-        //TODO: cancel callbacks to avoid memory leak, if applicable
+        //No ops; Cancel callbacks to avoid memory leak, if applicable
     }
 }
 

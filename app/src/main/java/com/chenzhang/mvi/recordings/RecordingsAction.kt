@@ -6,4 +6,5 @@ import com.chenzhang.mvi.data.Recording
 sealed class RecordingsAction : MviAction {
     object LoadRecordingsAction : RecordingsAction()
     data class DeleteRecordingAction(val recording: Recording) : RecordingsAction()
+    object AddRecordingAction : RecordingsAction()
 }

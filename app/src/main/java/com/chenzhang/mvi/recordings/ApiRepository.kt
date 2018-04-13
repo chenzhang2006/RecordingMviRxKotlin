@@ -4,6 +4,7 @@ import com.chenzhang.mvi.data.Recording
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import java.util.*
 import java.util.concurrent.TimeUnit.SECONDS
 
 class ApiRepository {
@@ -23,4 +24,16 @@ class ApiRepository {
     }
 
     fun loadRecorderUsage(): Observable<Int> = Observable.just(56).delay(1, SECONDS)
+
+    fun addRecordingThenLoad(): Single<List<Recording>> {
+        addNewRecording()
+        return Observable.fromIterable(recordings)
+                .delay(2, SECONDS)
+                .toList()
+    }
+
+    private fun addNewRecording() {
+        val intId = Random().nextInt(100) + 104
+        recordings += Recording(intId.toString(), "Recording $intId", "Movie $intId")
+    }
 }

@@ -8,4 +8,5 @@ sealed class RecordingsIntent : MviIntent {
     object InitialIntent : RecordingsIntent()
     object RefreshIntent : RecordingsIntent()
     data class DeleteIntent(val recording: Recording) : RecordingsIntent()
+    object AddIntent : RecordingsIntent()
 }
