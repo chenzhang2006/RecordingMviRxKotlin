@@ -2,4 +2,5 @@
     <string name="app_name">Recording-Mvi-Rx-Kotlin</string>
     <string name="action_settings">Settings</string>
     <string name="recording_play_message">Play Recording %1$s</string>
+    <string name="recorder_usage">%1$d%%</string>
 </resources>

@@ -6,7 +6,7 @@ import com.chenzhang.mvi.data.Recording
 sealed class RecordingsResult : MviResult {
     sealed class LoadingResult : RecordingsResult() {
         object LoadingInProgress : LoadingResult()
-        data class LoadingSuccess(val recordings: List<Recording>) : LoadingResult()
+        data class LoadingSuccess(val recordings: List<Recording>, val recorderUsage: Int) : LoadingResult()
         data class LoadingFailure(val error: Throwable) : LoadingResult()
     }
 

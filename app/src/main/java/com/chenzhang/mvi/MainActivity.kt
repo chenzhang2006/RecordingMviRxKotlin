@@ -1,6 +1,8 @@
 package com.chenzhang.mvi
 
+import android.annotation.TargetApi
 import android.arch.lifecycle.ViewModelProviders
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -62,15 +64,24 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
 
     private fun deleteIntent() = recordingsAdapter.deleteObservable.map { recording -> RecordingsIntent.DeleteIntent(recording) }
 
+    @TargetApi(VERSION_CODES.N)
     override fun render(state: RecordingsViewState) {
         //initial viewState used by Rx scan()/reducer
         if (state == RecordingsViewState.initial()) return
 
         if (state.isLoading) {
             progressBar.visibility = View.VISIBLE
+            recyclerView.visibility = View.INVISIBLE
+            recorderUsage.visibility = View.INVISIBLE
+            recorderUsageBar.visibility = View.INVISIBLE
         } else {
-            progressBar.visibility = View.INVISIBLE
+            progressBar.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            recorderUsage.visibility = View.VISIBLE
+            recorderUsageBar.visibility = View.VISIBLE
             recordingsAdapter.setItems(state.recordings)
+            recorderUsage.text = getString(R.string.recorder_usage, state.recorderUsage)
+            recorderUsageBar.setProgress(state.recorderUsage, true)
         }
 
     }
@@ -80,7 +91,7 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         viewModel.processIntents(intents())
 
         recordingsAdapter.playObservable.subscribe { recording ->
-            Snackbar.make(content_main_container, getString(R.string.recording_play_message, recording.title), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(contentMainContainer, getString(R.string.recording_play_message, recording.title), Snackbar.LENGTH_LONG).show()
         }
     }
 

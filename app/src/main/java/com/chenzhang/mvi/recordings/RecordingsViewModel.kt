@@ -77,14 +77,14 @@ class RecordingsViewModel(
         private val reducer = BiFunction { previousState: RecordingsViewState, result: RecordingsResult ->
             when (result) {
                 is LoadingResult -> when (result) {
-                    is LoadingSuccess -> previousState.copy(false, result.recordings)
-                    is LoadingFailure -> previousState.copy(false, error = result.error)
-                    is LoadingInProgress -> previousState.copy(true)
+                    is LoadingSuccess -> previousState.copy(isLoading = false, recordings = result.recordings, recorderUsage = result.recorderUsage)
+                    is LoadingFailure -> previousState.copy(isLoading = false, error = result.error)
+                    is LoadingInProgress -> previousState.copy(isLoading = true)
                 }
                 is DeleteResult -> when (result) {
-                    is DeleteSuccess -> previousState.copy(false, result.recordings)
-                    is DeleteFailure -> previousState.copy(false, error = result.error)
-                    is DeleteInProgress -> previousState.copy(true)
+                    is DeleteSuccess -> previousState.copy(isLoading = false, recordings = result.recordings)
+                    is DeleteFailure -> previousState.copy(isLoading = false, error = result.error)
+                    is DeleteInProgress -> previousState.copy(isLoading = true)
                 }
             }
         }

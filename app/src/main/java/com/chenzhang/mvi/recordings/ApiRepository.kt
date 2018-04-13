@@ -21,4 +21,6 @@ class ApiRepository {
         recordings.remove(recording)
         return Completable.complete()
     }
+
+    fun loadRecorderUsage(): Observable<Int> = Observable.just(56).delay(1, SECONDS)
 }

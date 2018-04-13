@@ -8,6 +8,7 @@ import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.zipWith
 import io.reactivex.schedulers.Schedulers
 
 class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
@@ -28,8 +29,9 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
                 action.flatMap {
                     apiRepository.loadRecordings()
                             .toObservable()
-                            .map { t: List<Recording> ->
-                                LoadingResult.LoadingSuccess(t)
+                            .zipWith(apiRepository.loadRecorderUsage())
+                            .map { pair: Pair<List<Recording>, Int> ->
+                                LoadingResult.LoadingSuccess(pair.first, pair.second)
                             }
                             .cast(LoadingResult::class.java)
                             .onErrorReturn(LoadingResult::LoadingFailure)
