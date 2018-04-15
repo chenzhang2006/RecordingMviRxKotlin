@@ -19,6 +19,7 @@ import com.chenzhang.mvi.view.RecordingsAdapter
 import com.chenzhang.recording_mvi_rx_kotlin.R
 import com.chenzhang.recording_mvi_rx_kotlin.R.id
 import com.chenzhang.recording_mvi_rx_kotlin.R.layout
+import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         bind()
     }
 
-    override fun intents(): Observable<RecordingsIntent> = Observable.merge(initialIntent(), deleteIntent(), addIntent())
+    override fun intents(): Observable<RecordingsIntent> = Observable.merge(initialIntent(), deleteIntent(), addIntent(), refreshIntent())
 
     private fun initialIntent() = Observable.just(RecordingsIntent.InitialIntent)
 
@@ -65,10 +66,17 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         RecordingsIntent.AddIntent
     }
 
+    private fun refreshIntent() = RxSwipeRefreshLayout.refreshes(swipeRefreshLayout)
+            .map { RecordingsIntent.RefreshIntent }
+
     @TargetApi(VERSION_CODES.N)
     override fun render(state: RecordingsViewState) {
         //initial viewState used by Rx scan()/reducer
         if (state == RecordingsViewState.initial()) return
+
+        if (swipeRefreshLayout.isRefreshing) {
+            swipeRefreshLayout.isRefreshing = state.isLoading
+        }
 
         if (state.isLoading) {
             progressBar.visibility = View.VISIBLE
