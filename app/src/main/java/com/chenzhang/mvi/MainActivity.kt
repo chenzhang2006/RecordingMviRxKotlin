@@ -23,6 +23,7 @@ import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.util.concurrent.TimeUnit.MILLISECONDS
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
                 .get(RecordingsViewModel::class.java)
     }
     private val recordingsAdapter: RecordingsAdapter by lazy { RecordingsAdapter() }
+    private val refreshIntentPublisher = PublishSubject.create<RecordingsIntent.RefreshIntent>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +68,10 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         RecordingsIntent.AddIntent
     }
 
+    //swipe-to-refresh intent along with option-menu-refresh intent
     private fun refreshIntent() = RxSwipeRefreshLayout.refreshes(swipeRefreshLayout)
             .map { RecordingsIntent.RefreshIntent }
+            .mergeWith(refreshIntentPublisher)
 
     @TargetApi(VERSION_CODES.N)
     override fun render(state: RecordingsViewState) {
@@ -110,10 +114,11 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            id.action_settings -> true
+        when (item.itemId) {
+            id.menuRefresh -> refreshIntentPublisher.onNext(RecordingsIntent.RefreshIntent)
             else -> super.onOptionsItemSelected(item)
         }
+        return true
     }
 
     override fun onDestroy() {
