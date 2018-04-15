@@ -6,7 +6,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:padding="16dp">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
     <TextView
             android:id="@+id/collapsedRecordingTitle"
@@ -16,7 +17,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/collapsedDelete"
             android:layout_marginEnd="16dp"
-            android:textSize="24dp"
+            android:textSize="24sp"
             />
 
     <ImageView
@@ -26,5 +27,6 @@
             app:layout_constraintTop_toTopOf="@+id/collapsedRecordingTitle"
             app:layout_constraintBottom_toBottomOf="@+id/collapsedRecordingTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_remove" />
+            app:srcCompat="@drawable/ic_remove"
+            android:contentDescription="@string/content_desc_remove"/>
 </android.support.constraint.ConstraintLayout>

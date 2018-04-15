@@ -10,39 +10,42 @@
         android:id="@+id/contentMainContainer">
 
     <TextView
-            android:text="Recorder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/recorderUsage"
-            android:textSize="24dp"
+            android:textSize="24sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp"
             />
 
     <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:layout_editor_absoluteY="0dp"
             android:id="@+id/recorderUsageBar"
             app:layout_constraintStart_toEndOf="@+id/recorderUsage"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/recorderUsage"
             app:layout_constraintBottom_toBottomOf="@id/recorderUsage"
-            android:layout_marginStart="8dp"/>
+            />
 
     <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/recorderUsage"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@id/recorderUsage"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
 
     </android.support.v4.widget.SwipeRefreshLayout>
     <ProgressBar
