@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
     }
 
     //swipe-to-refresh intent along with option-menu-refresh intent
-    private fun refreshIntent() = RxSwipeRefreshLayout.refreshes(swipeRefreshLayout)
+    private fun refreshIntent() = RxSwipeRefreshLayout.refreshes(swipeRefresh)
             .map { RecordingsIntent.RefreshIntent }
             .mergeWith(refreshIntentPublisher)
 
@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         //initial viewState used by Rx scan()/reducer
         if (state == RecordingsViewState.initial()) return
 
-        if (swipeRefreshLayout.isRefreshing) {
-            swipeRefreshLayout.isRefreshing = state.isLoading
+        if(swipeRefresh.isRefreshing){
+            swipeRefresh.isRefreshing = false
         }
 
         if (state.isLoading) {
