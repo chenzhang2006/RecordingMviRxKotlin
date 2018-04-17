@@ -19,16 +19,16 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="Recordings.CollapsingToolbar" parent="">
-        <item name="collapsedTitleTextAppearance">@style/TextAppearance.Recordings.Logo</item>
+        <item name="collapsedTitleTextAppearance">@style/TextAppearance.Recordings.Title</item>
         <item name="contentScrim">?attr/colorPrimary</item>
         <item name="expandedTitleGravity">top</item>
         <item name="expandedTitleMarginStart">96dp</item>
         <item name="expandedTitleMarginTop">64dp</item>
-        <item name="expandedTitleTextAppearance">@style/TextAppearance.Recordings.Logo</item>
+        <item name="expandedTitleTextAppearance">@style/TextAppearance.Recordings.Title</item>
         <item name="scrimVisibleHeightTrigger">140dp</item>
     </style>
 
-    <style name="TextAppearance.Recordings.Logo" parent="TextAppearance.AppCompat.Display3">
+    <style name="TextAppearance.Recordings.Title" parent="TextAppearance.AppCompat.Display3">
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -39,6 +39,11 @@
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:layout_gravity">top</item>
         <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TextAppearance.Recorder.Usage" parent="TextAppearance.AppCompat.Display3">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">italic</item>
     </style>
 
 </resources>

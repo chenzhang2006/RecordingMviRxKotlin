@@ -37,12 +37,26 @@
                         android:text="@string/app_bar_summary"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display1"/>
 
-                <TextView
+                <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="16dp"
-                        android:text="@string/app_bar_detail"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+                    <ProgressBar
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/recorderUsageBar"
+                            android:layout_gravity="center_vertical"
+                            />
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/recorderUsage"
+                            android:paddingStart="8dp"
+                            style="@style/TextAppearance.Recorder.Usage"
+                            />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -51,8 +65,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"/>
-            <!--android:background="?attr/colorPrimary"-->
-            <!--app:popupTheme="@style/AppTheme.PopupOverlay"/>-->
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
