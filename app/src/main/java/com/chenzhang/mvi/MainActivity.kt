@@ -85,13 +85,11 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         if (state.isLoading) {
             progressBar.visibility = View.VISIBLE
             recyclerView.visibility = View.INVISIBLE
-            recorderUsage.visibility = View.INVISIBLE
-            recorderUsageBar.visibility = View.INVISIBLE
+            recorderUsageContainer.visibility = View.INVISIBLE
         } else {
             progressBar.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
-            recorderUsage.visibility = View.VISIBLE
-            recorderUsageBar.visibility = View.VISIBLE
+            recorderUsageContainer.visibility = View.VISIBLE
             recordingsAdapter.setItems(state.recordings)
             recorderUsage.text = getString(R.string.recorder_usage, state.recorderUsage)
             recorderUsageBar.setProgress(state.recorderUsage, true)
