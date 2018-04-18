@@ -2,6 +2,7 @@ package com.chenzhang.mvi
 
 import android.annotation.TargetApi
 import android.arch.lifecycle.ViewModelProviders
+import android.os.Build
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -92,7 +93,11 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
             recorderUsageContainer.visibility = View.VISIBLE
             recordingsAdapter.setItems(state.recordings)
             recorderUsage.text = getString(R.string.recorder_usage, state.recorderUsage)
-            recorderUsageBar.setProgress(state.recorderUsage, true)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                recorderUsageBar.setProgress(state.recorderUsage, true)
+            } else {
+                recorderUsageBar.progress = state.recorderUsage
+            }
         }
 
     }
