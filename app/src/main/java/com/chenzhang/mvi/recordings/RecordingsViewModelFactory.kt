@@ -9,6 +9,10 @@ class RecordingsViewModelFactory : ViewModelProvider.Factory {
         return when (modelClass) {
             RecordingsViewModel::class.java ->
                     RecordingsViewModel(RecordingsIntentProcessors(ApiRepository())) as T
+            Page1ViewModel::class.java ->
+                Page1ViewModel(RecordingsIntentProcessors(ApiRepository())) as T
+            Page2ViewModel::class.java ->
+                Page2ViewModel(RecordingsIntentProcessors(ApiRepository())) as T
             else ->
                     throw IllegalArgumentException("Unknown ViewModel type")
         }
