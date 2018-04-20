@@ -6,6 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.chenzhang.mvi.data.Recording
+import com.chenzhang.mvi.data.RecordingType
+import com.chenzhang.mvi.data.RecordingType.MOVIE
+import com.chenzhang.mvi.data.RecordingType.MV
+import com.chenzhang.mvi.data.RecordingType.SPORT
+import com.chenzhang.mvi.data.RecordingType.TV
 import com.chenzhang.recording_mvi_rx_kotlin.R
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -63,13 +68,14 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 notifyItemChanged(layoutPosition)
             }
 
-            itemView.expandedDelete.setOnClickListener { deleteSubject.onNext(items[layoutPosition].first) }
-            itemView.expandedPlay.setOnClickListener { playSubject.onNext(items[layoutPosition].first) }
+            itemView.deleteButton.setOnClickListener { deleteSubject.onNext(items[layoutPosition].first) }
+            itemView.playButton.setOnClickListener { playSubject.onNext(items[layoutPosition].first) }
         }
 
         fun bind(recording: Recording) {
             itemView.expandedRecordingTitle.text = recording.title
-            itemView.expandedRecordingDesc.text = recording.description
+            itemView.recordingDesc.text = recording.description
+            itemView.expandedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
         }
     }
 
@@ -79,13 +85,20 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 items[layoutPosition] = items[layoutPosition].run { first to true }
                 notifyItemChanged(layoutPosition)
             }
-
-            itemView.collapsedDelete.setOnClickListener { deleteSubject.onNext(items[layoutPosition].first) }
         }
 
         fun bind(recording: Recording) {
             itemView.collapsedRecordingTitle.text = recording.title
+            itemView.collapsedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
         }
     }
+
+    private fun getTypeBadge(recordingType: RecordingType) =
+            when (recordingType) {
+                MOVIE -> R.drawable.ic_movie_black_24dp
+                TV -> R.drawable.ic_tv_black_24dp
+                MV -> R.drawable.ic_mv_black_24dp
+                SPORT -> R.drawable.ic_sport_black_24dp
+            }
 
 }

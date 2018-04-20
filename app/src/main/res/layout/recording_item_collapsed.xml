@@ -9,24 +9,38 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
 
+    <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_movie_black_24dp"
+            android:tint="@color/colorBadge"
+            android:id="@+id/collapsedRecordingType"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:layout_marginTop="10dp"
+            />
+
     <TextView
             android:id="@+id/collapsedRecordingTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/collapsedDelete"
-            android:layout_marginEnd="16dp"
-            android:textSize="24sp"
-            />
-
-    <ImageView
-            android:id="@+id/collapsedDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/collapsedRecordingTitle"
-            app:layout_constraintBottom_toBottomOf="@+id/collapsedRecordingTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_remove"
-            android:contentDescription="@string/content_desc_remove"/>
+            style="@style/TextAppearance.RecordingItem.title"
+            app:layout_constraintStart_toEndOf="@id/collapsedRecordingType"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"/>
+
+    <TextView
+            android:id="@+id/collapsedRecordingTime"
+            android:text="time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/collapsedRecordingTitle"
+            style="@style/TextAppearance.RecordingItem.time"
+            app:layout_constraintStart_toEndOf="@id/collapsedRecordingType"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"/>
+
 </android.support.constraint.ConstraintLayout>
