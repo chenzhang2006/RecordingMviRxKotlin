@@ -65,6 +65,7 @@
 
     <style name="TextAppearance.RecordingItem.description" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/textColor</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
 </resources>

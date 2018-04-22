@@ -61,8 +61,8 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val ITEM_VIEW_COLLAPSED = 0
         private const val ITEM_VIEW_EXPANDED = 1
-        private val recordingTimeFormatterLong = FastDateFormat.getInstance("MMM d HH:mm", Locale.getDefault())
-        private val recordingTimeFormatterShort = FastDateFormat.getInstance("MM/d", Locale.getDefault())
+        private val recordingTimeFormatterLong = FastDateFormat.getInstance("MMM d h:mm a", Locale.getDefault())
+        private val recordingTimeFormatterShort = FastDateFormat.getInstance("M/d", Locale.getDefault())
     }
 
     inner class ExpandedItemViewHolder(item: View) : RecyclerView.ViewHolder(item) {

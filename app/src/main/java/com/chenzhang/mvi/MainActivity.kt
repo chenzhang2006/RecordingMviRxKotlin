@@ -21,13 +21,11 @@ import com.chenzhang.recording_mvi_rx_kotlin.R
 import com.chenzhang.recording_mvi_rx_kotlin.R.id
 import com.chenzhang.recording_mvi_rx_kotlin.R.layout
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout
-import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsViewState> {
@@ -59,15 +57,11 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         bind()
     }
 
-    override fun intents(): Observable<RecordingsIntent> = Observable.merge(initialIntent(), deleteIntent(), addIntent(), refreshIntent())
+    override fun intents(): Observable<RecordingsIntent> = Observable.merge(initialIntent(), deleteIntent(), refreshIntent())
 
     private fun initialIntent() = Observable.just(RecordingsIntent.InitialIntent)
 
     private fun deleteIntent() = recordingsAdapter.deleteObservable.map { recording -> RecordingsIntent.DeleteIntent(recording) }
-
-    private fun addIntent() = RxView.clicks(fab).debounce(200, MILLISECONDS).map {
-        RecordingsIntent.AddIntent
-    }
 
     //swipe-to-refresh intent along with option-menu-refresh intent
     private fun refreshIntent() = RxSwipeRefreshLayout.refreshes(swipeRefresh)
@@ -98,8 +92,10 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
             } else {
                 recorderUsageBar.progress = state.recorderUsage
             }
+            if (state.recordings.isEmpty()) {
+                Snackbar.make(contentMainContainer, getString(R.string.empty_recording_message), Snackbar.LENGTH_LONG).show()
+            }
         }
-
     }
 
     private fun bind() {

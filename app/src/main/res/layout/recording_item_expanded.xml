@@ -44,7 +44,6 @@
             android:layout_marginStart="8dp"/>
 
 
-
     <TextView
             android:id="@+id/recordingDesc"
             android:layout_width="0dp"
@@ -53,7 +52,7 @@
             app:layout_constraintStart_toEndOf="@id/expandedRecordingType"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/expandedRecordingTime"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             style="@style/TextAppearance.RecordingItem.description"
             />
