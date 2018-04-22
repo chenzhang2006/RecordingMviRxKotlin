@@ -1,7 +1,6 @@
 package com.chenzhang.mvi.recordings
 
 import com.chenzhang.mvi.data.Recording
-import com.chenzhang.mvi.data.RecordingTime
 import com.chenzhang.mvi.data.RecordingType.MOVIE
 import com.chenzhang.mvi.data.RecordingType.SPORT
 import com.chenzhang.mvi.data.RecordingType.TV
@@ -13,7 +12,7 @@ import java.util.concurrent.TimeUnit.SECONDS
 
 class ApiRepository {
     private val recordings: MutableList<Recording> =
-            mutableListOf(Recording("101", "Recording 1", MOVIE, "Movie 1", RecordingTime(Date(), Date())),
+            mutableListOf(Recording("101", "Recording 1", MOVIE, "Movie 1", Date()),
                     Recording("102", "Recording 2", TV, "Movie 2"),
                     Recording("103", "Recording 3", SPORT, "Movie 3"))
 

@@ -16,6 +16,8 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.recording_item_collapsed.view.*
 import kotlinx.android.synthetic.main.recording_item_expanded.view.*
+import org.apache.commons.lang3.time.FastDateFormat
+import java.util.*
 
 class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: MutableList<Pair<Recording, Boolean>> = mutableListOf()
@@ -59,6 +61,8 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val ITEM_VIEW_COLLAPSED = 0
         private const val ITEM_VIEW_EXPANDED = 1
+        private val recordingTimeFormatterLong = FastDateFormat.getInstance("MMM d HH:mm", Locale.getDefault())
+        private val recordingTimeFormatterShort = FastDateFormat.getInstance("MM/d", Locale.getDefault())
     }
 
     inner class ExpandedItemViewHolder(item: View) : RecyclerView.ViewHolder(item) {
@@ -76,6 +80,7 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.expandedRecordingTitle.text = recording.title
             itemView.recordingDesc.text = recording.description
             itemView.expandedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
+            itemView.expandedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterLong.format(it)) } ?: ""
         }
     }
 
@@ -90,6 +95,7 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(recording: Recording) {
             itemView.collapsedRecordingTitle.text = recording.title
             itemView.collapsedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
+            itemView.collapsedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterShort.format(it)) } ?: ""
         }
     }
 

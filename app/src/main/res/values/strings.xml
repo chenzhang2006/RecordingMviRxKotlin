@@ -8,4 +8,5 @@
     <string name="delete_button_label">Delete</string>
     <string name="content_desc_remove">remove</string>
     <string name="app_bar_summary">Kotlin, MVI and RxJava</string>
+    <string name="recording_time">Recorded %1$s</string>
 </resources>
