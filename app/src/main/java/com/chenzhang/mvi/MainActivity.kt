@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
@@ -18,7 +19,7 @@ import com.chenzhang.mvi.recordings.RecordingsViewModelFactory
 import com.chenzhang.mvi.recordings.RecordingsViewState
 import com.chenzhang.mvi.view.RecordingsAdapter
 import com.chenzhang.recording_mvi_rx_kotlin.R
-import com.chenzhang.recording_mvi_rx_kotlin.R.id
+import com.chenzhang.recording_mvi_rx_kotlin.R.id.menuRefresh
 import com.chenzhang.recording_mvi_rx_kotlin.R.layout
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout
 import io.reactivex.Observable
@@ -48,6 +49,16 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
 
         setContentView(layout.activity_main)
         setSupportActionBar(toolbar)
+
+        //menu icon, navView and its standard setup
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            Snackbar.make(contentMainContainer, getString(R.string.nav_menu_clicked_message, menuItem.title), Snackbar.LENGTH_LONG).show()
+            drawerLayout.closeDrawers()
+            true
+        }
 
         with(recyclerView) {
             layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
@@ -117,7 +128,8 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            id.menuRefresh -> refreshIntentPublisher.onNext(RecordingsIntent.RefreshIntent)
+            menuRefresh -> refreshIntentPublisher.onNext(RecordingsIntent.RefreshIntent)
+            android.R.id.home -> drawerLayout.openDrawer(GravityCompat.START)
             else -> super.onOptionsItemSelected(item)
         }
         return true
