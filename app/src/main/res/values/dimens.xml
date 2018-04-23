@@ -1,4 +1,5 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="general_padding">16dp</dimen>
     <dimen name="app_bar_height">240dp</dimen>
+    <dimen name="navheader_height">220dp</dimen>
 </resources>
