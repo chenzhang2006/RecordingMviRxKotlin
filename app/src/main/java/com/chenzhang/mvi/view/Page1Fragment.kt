@@ -34,16 +34,19 @@ class Page1Fragment : Fragment(), MviView<RecordingsIntent, RecordingsViewState>
     private val LOG = Logger.getLogger(this::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        LOG.debug("onCreate()")
         super.onCreate(savedInstanceState)
         MviApplication.appComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        LOG.debug("onCreateView()")
         return inflater.inflate(R.layout.fragment_page1, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        LOG.debug("onViewCreated()")
         super.onViewCreated(view, savedInstanceState)
         bind()
     }
