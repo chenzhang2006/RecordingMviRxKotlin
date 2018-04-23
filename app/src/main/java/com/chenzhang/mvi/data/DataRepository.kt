@@ -2,6 +2,9 @@ package com.chenzhang.mvi.data
 
 import java.util.*
 
+/**
+ * This class mocks data repository; In reality, it should be a resource on network or database
+ */
 class DataRepository {
 
     private val recordings = mutableListOf<Recording>(
@@ -17,6 +20,8 @@ class DataRepository {
     fun deleteReocrding(recording: Recording) {
         recordings.remove(recording)
     }
+
+    fun getRecorderUsage() = recordings.size *12
 
     companion object {
 

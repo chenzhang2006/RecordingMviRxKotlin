@@ -82,7 +82,7 @@ class RecordingsViewModel(
                     is LoadingInProgress -> previousState.copy(isLoading = true)
                 }
                 is DeleteResult -> when (result) {
-                    is DeleteSuccess -> previousState.copy(isLoading = false, recordings = result.recordings)
+                    is DeleteSuccess -> previousState.copy(isLoading = false, recordings = result.recordings, recorderUsage = result.recorderUsage)
                     is DeleteFailure -> previousState.copy(isLoading = false, error = result.error)
                     is DeleteInProgress -> previousState.copy(isLoading = true)
                 }

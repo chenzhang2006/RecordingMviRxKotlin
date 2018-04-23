@@ -8,11 +8,9 @@ import io.reactivex.Single
 import java.util.concurrent.TimeUnit.SECONDS
 
 class ApiRepository(private val dataRepository: DataRepository) {
-    private val recordings: List<Recording>
-        get() = dataRepository.loadCurrentRecordings()
 
     fun loadRecordings(): Single<List<Recording>> =
-            Observable.fromIterable(recordings)
+            Observable.fromIterable(dataRepository.loadCurrentRecordings())
                     .delay(2, SECONDS)
                     .toList()
 
@@ -21,6 +19,6 @@ class ApiRepository(private val dataRepository: DataRepository) {
         return Completable.complete()
     }
 
-    fun loadRecorderUsage(): Observable<Int> = Observable.just(56).delay(1, SECONDS)
+    fun loadRecorderUsage(): Observable<Int> = Observable.just(dataRepository.getRecorderUsage()).delay(1, SECONDS)
 
 }

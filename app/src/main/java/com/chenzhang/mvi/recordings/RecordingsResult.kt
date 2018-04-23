@@ -11,7 +11,7 @@ sealed class RecordingsResult : MviResult {
     }
 
     sealed class DeleteResult : RecordingsResult() {
-        data class DeleteSuccess(val recordings: List<Recording>) : DeleteResult()
+        data class DeleteSuccess(val recordings: List<Recording>, val recorderUsage: Int) : DeleteResult()
         data class DeleteFailure(val error: Throwable) : DeleteResult()
         object DeleteInProgress : DeleteResult()
     }

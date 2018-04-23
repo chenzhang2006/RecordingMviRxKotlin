@@ -47,8 +47,9 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
                     apiRepository.deleteRecording(a.recording)
                             .andThen(apiRepository.loadRecordings())
                             .toObservable()
-                            .map { r: List<Recording> ->
-                                DeleteResult.DeleteSuccess(r)
+                            .zipWith(apiRepository.loadRecorderUsage())
+                            .map { pair: Pair<List<Recording>, Int> ->
+                                DeleteResult.DeleteSuccess(pair.first, pair.second)
                             }
                             .cast(DeleteResult::class.java)
                             .onErrorReturn(DeleteResult::DeleteFailure)

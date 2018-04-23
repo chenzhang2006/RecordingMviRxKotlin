@@ -10,6 +10,7 @@ data class RecordingsViewState(
         val error: Throwable? = null
 ) : MviViewState {
     companion object {
-        fun initial() = RecordingsViewState()
+        //used for Rx#scan as initial state, which has to be diff from possible normal viewStates
+        fun initial() = RecordingsViewState(recorderUsage = -1)
     }
 }
