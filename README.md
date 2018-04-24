@@ -11,21 +11,21 @@ This application is an sample Android app to showcase **Model-View-Intent(MVI)**
 * [Dagger 2](https://github.com/google/dagger)
 * [JUnit](https://junit.org/junit4), [JMockit](https://jmockit.github.io)
 
-All popular Android architectural patterns share a common goal to abstract business logic out of the _View_ layer. But by reading _Hannes Dorfmann_'s [Mosby MVI](http://hannesdorfmann.com/android/mosby3-mvi-1) post, compared to the traditional **MVP** and **MVVM** design, I think **MVI** promotes and enforces the following principles and concepts:
+All popular Android architectural patterns share a common goal to abstract business logic out of the _View_ layer. But by reading _Hannes Dorfmann_'s [Mosby MVI](http://hannesdorfmann.com/android/mosby3-mvi-1) post, compared to the traditional **MVP** and **MVVM** design, **MVI** promotes and enforces the following principles and concepts that were lacked by other patterns:
 
 * **Unidirectional**(push-only, no-pull) data flow
 * **Reactive** processing chain
 * **Immutable** data model
 * Consolidated **ViewState** definition
-* Highest-level of decoupling between _View_ & _Presenter_ layers, boiled down to _Intent_ & _ViewState_
+* Highest-level of decoupling between _View_ & _Presenter_ layers; All interactions are boiled down to _Intent_ & _ViewState_
 
 ### Model-View-Intent Details
 
-Abstraction:
+Mathematical Abstraction:
 
-<img src="https://user-images.githubusercontent.com/17072625/39215583-6894318c-47e6-11e8-868e-a403873ebce1.png" alt="MVI simple flow"/>
+<img src="https://user-images.githubusercontent.com/17072625/39215583-6894318c-47e6-11e8-868e-a403873ebce1.png" alt="MVI mathematical model"/>
 
-Layers:
+Code Design Layers:
 
 <img src="https://user-images.githubusercontent.com/17072625/39216243-e6d26620-47e8-11e8-9b78-1a5835d0e88d.png" alt="MVI contract"/>
 
