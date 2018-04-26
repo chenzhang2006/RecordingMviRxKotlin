@@ -94,6 +94,6 @@ Responsible to merge *Result* into the previous _ViewState_ and create a new _Vi
 
 ### Other Notes About the Application
 
-* Mocked *ApiRepository* for sake of simplicity and demo purposes
-* *RecordingsViewModelTest* to demo unit test on *ViewModel*. But ALL components(UI, ViewModel, Processors, ApiRepository) are testable, thanks to the decoupled architectural components.
 * *Material Design* with AppBar/CollapsingToolbar, NavigationDrawer, etc.
+* Mocked backend *ApiRepository* and some UI observers for sake of simplicity and demo purposes
+* *RecordingsViewModelTest* to demo unit test on *ViewModel*. But ALL components(UI, ViewModel, Processors, ApiRepository) are testable, thanks to the decoupled architectural components.

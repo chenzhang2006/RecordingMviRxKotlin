@@ -32,12 +32,13 @@ class RecordingsViewModel(
 
     private fun bindIntent(): Observable<RecordingsViewState> {
         return intentsSubject
-                .doOnNext { LOG.debug("raw intent $it") }
+                .doOnNext { LOG.debug("Tracking raw intent $it") }
                 .initialFilter()
-                .doOnNext { LOG.debug("filtered intent $it") }
+                .doOnNext { LOG.debug("Tracking filtered intent $it") }
                 .map(this::actionMappedFromIntent)
                 .compose(recordingsIntentProcessors.actionProcessor)
-                .scan(RecordingsViewState.initial(), reducer)
+                .scan(RecordingsViewState.scanInitialState(), reducer)
+                .doOnNext { LOG.debug("Tracking viewState: $it") }
                 .replay(1)
                 .autoConnect()
     }

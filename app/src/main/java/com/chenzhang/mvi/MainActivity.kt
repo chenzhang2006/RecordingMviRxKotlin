@@ -81,8 +81,8 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
 
     @TargetApi(VERSION_CODES.N)
     override fun render(state: RecordingsViewState) {
-        //initial viewState used by Rx scan()/reducer
-        if (state == RecordingsViewState.initial()) return
+        //Rx#scan initial state, so states can be accumulated in ViewModel; Ignored by View layer
+        if (state == RecordingsViewState.scanInitialState()) return
 
         if(swipeRefresh.isRefreshing){
             swipeRefresh.isRefreshing = false

@@ -11,6 +11,6 @@ data class RecordingsViewState(
 ) : MviViewState {
     companion object {
         //used for Rx#scan as initial state, which has to be diff from possible normal viewStates
-        fun initial() = RecordingsViewState(recorderUsage = -1)
+        fun scanInitialState() = RecordingsViewState(recorderUsage = -1)
     }
 }
