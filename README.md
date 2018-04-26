@@ -1,5 +1,7 @@
 # RecordingMviRxKotlin
 
+<img src="https://user-images.githubusercontent.com/17072625/39311626-707d6020-493b-11e8-8289-aacb9969d4e2.png" alt="screenshot"/>
+
 ### Summary
 
 This application is an sample Android app to showcase **Model-View-Intent(MVI)** architecture with **RxJava** to implement the reactive chain, written in **Kotlin**. It features:
@@ -31,19 +33,32 @@ I can summarize the design and motivation behind this project. But regarding the
 
 <img src="https://user-images.githubusercontent.com/17072625/39271226-678cf86c-48a6-11e8-99d2-46f6b98016db.png" alt="MVI contract"/>
 
+#### Why data *Immutability* and *Unidirectional* flow are important
+
+Because in my professional experience, when the business requirement got much more complex and the dev team became large in size, we want to keep things simple, so we can engineer and debug code more effectively.
+
+When we expose data models from business logic out to the wild, we don't want other components in our app to modify model/state and we loose track of them. *Data immutablility* helps set the rules.
+
+On the same token, *Unidirectional* data flow establishes and maintains the *Source of Truth* within *Business Logic* layer. Regardless how UI are affected by device state changes, we always have the truth on the backend and are able to "recover".
+
+
 #### What is the importance of a consolidated ViewState(Model)
 
-[Post #1 in the series ](http://hannesdorfmann.com/android/mosby3-mvi-1) perfectly explained the rationale.
+[Post #1 in the series](http://hannesdorfmann.com/android/mosby3-mvi-1) perfectly explained the rationale.
 
 #### What is "intent" in MVI?
 
-_Intent_ represents user's intent, through his/her screen gesture. E.g. button click or item selection. Described in [Post #2 in series](http://hannesdorfmann.com/android/mosby3-mvi-2)
+_Intent_ represents user's intent by screen gestures(NOT Android's system *Intent*). E.g. button click or item selection. Described in [Post #2 in series](http://hannesdorfmann.com/android/mosby3-mvi-2)
 
 #### Why need _ViewModel_?
 
-Because [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel.html) survives the configuration change through screen rotation.
+Because [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel.html) survives the configuration change through screen rotation. Perfect fit to hold the hot observable to replay the last *ViewState* post-screen-rotation.
 
-#### Intent and ViewState are ALL the interactions between _View_ with _ViewModel_
+We could also use *Dagger2*'s *Custom Scope*(e.g. @ActivitiyScope) to maintain presenters as an alternative solution, in order for *model* to survive configuration changes.
+
+[Post #6 in the series](http://hannesdorfmann.com/android/mosby3-mvi-6) explained this area in Mosby but I am using *ViewModel* & *RxJava state stream* to achieve the same result.
+
+#### *Intent* and *ViewState* are ALL the interactions between *View* with *ViewModel*
 
 ```
 interface MviView<I : MviIntent, in S : MviViewState> {
@@ -61,7 +76,7 @@ interface MviViewModel<I : MviIntent, S : MviViewState> {
 
 #### Action from Intent
 
-Intents are mapped to their logic *Action*. E.g. user "pull to refresh" intent mapped to "reload" action
+Intents are mapped to their logic *Action*. *Action* is the direct input for the *Business Logic(Processor & ApiRepository)* layer. E.g. user "pull to refresh" intent mapped to "reload" action. There might be many-to-many relationship between *Intent* and *Action*
 
 #### Processor
 
@@ -73,4 +88,10 @@ Output from *Processor*, including errors
 
 #### Reducer
 
-Responsible to merge *Result* into the previous _ViewState_ and create a new _ViewState_. Well described in [Post #3 in the series](http://hannesdorfmann.com/android/mosby3-mvi-3)
+Responsible to merge *Result* into the previous _ViewState_ and create a new _ViewState_, which is observed and rendered on UI layer. Well described in [Post #3 in the series](http://hannesdorfmann.com/android/mosby3-mvi-3)
+
+### Other Notes About the Application
+
+* Mocked *ApiRepository* for sake of simplicity and demo purposes
+* *RecordingsViewModelTest* to demo unit test on *ViewModel*. But ALL components(UI, ViewModel, Processors, ApiRepository) are testable, thanks to the decoupled architectural components.
+* *Material Design* with AppBar/CollapsingToolbar, NavigationDrawer, etc.
