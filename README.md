@@ -27,7 +27,7 @@ I can summarize the design and motivation behind this project. But regarding the
 
 #### Mathematical Abstraction:
 
-<img src="https://user-images.githubusercontent.com/17072625/39215583-6894318c-47e6-11e8-868e-a403873ebce1.png" alt="MVI mathematical model"/>
+`render ( param: viewState=businessLogic ( listen ( userIntents() ) ) )`
 
 #### Code Component Design:
 
