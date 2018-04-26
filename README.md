@@ -27,7 +27,9 @@ I can summarize the design and motivation behind this project. But regarding the
 
 #### Mathematical Abstraction:
 
-`render ( param: viewState=businessLogic ( listen ( userIntents() ) ) )`
+```
+render ( param: viewState = businessLogic ( listen ( userIntents () ) ) )
+```
 
 #### Code Component Design:
 
