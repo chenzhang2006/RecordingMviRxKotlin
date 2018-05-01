@@ -1,10 +1,12 @@
 package com.chenzhang.mvi.view
 
+import android.animation.ValueAnimator
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.airbnb.lottie.LottieAnimationView
 import com.chenzhang.mvi.data.Recording
 import com.chenzhang.mvi.data.RecordingType
 import com.chenzhang.mvi.data.RecordingType.MOVIE
@@ -23,12 +25,16 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: MutableList<Pair<Recording, Boolean>> = mutableListOf()
     private val deleteSubject = PublishSubject.create<Recording>()
     private val playSubject = PublishSubject.create<Recording>()
+    private val downloadSubject = PublishSubject.create<Recording>()
 
     val deleteObservable: Observable<Recording>
         get() = deleteSubject
 
     val playObservable: Observable<Recording>
         get() = playSubject
+
+    val downloadObservable: Observable<Recording>
+        get() = downloadSubject
 
     fun setItems(data: List<Recording>) {
         items = data.map { it to false }.toMutableList()
@@ -74,6 +80,18 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             itemView.deleteButton.setOnClickListener { deleteSubject.onNext(items[layoutPosition].first) }
             itemView.playButton.setOnClickListener { playSubject.onNext(items[layoutPosition].first) }
+
+            var downloading = false
+            itemView.downloadView.setOnClickListener {
+                if (!downloading) {
+                    /* This is for ONLY DEMO purpose that we simulate the download progress right here. By MVI's unidirectional data flow, View should pass Download intent
+                    to business logic, which generate new ViewState then render() into View. Will update this later when I get a chance*/
+                    (it as LottieAnimationView).animateDownload()
+
+                    downloadSubject.onNext(items[layoutPosition].first)
+                    downloading = true
+                }
+            }
         }
 
         fun bind(recording: Recording) {
@@ -81,6 +99,29 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.recordingDesc.text = recording.description
             itemView.expandedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
             itemView.expandedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterLong.format(it)) } ?: ""
+        }
+
+        private fun LottieAnimationView.animateDownload() {
+            setAnimation("download_progress.json", LottieAnimationView.CacheStrategy.Strong)
+            ValueAnimator.ofFloat(0f, 1.0f).setDuration(3000).apply {
+                addUpdateListener { valueAnimator ->
+                    progress = valueAnimator.animatedValue as Float
+
+                    if (progress == 1.0f) {
+                        setAnimation("check_mark.json", LottieAnimationView.CacheStrategy.Strong)
+                        ValueAnimator.ofFloat(0f, 1.0f).setDuration(2000).apply {
+                            addUpdateListener { checkAnimator ->
+                                progress = checkAnimator.animatedValue as Float
+                                if (checkAnimator.animatedValue as Float == 1.0f) {
+                                    itemView.downloadView.visibility = View.GONE
+                                }
+                            }
+                            start()
+                        }
+                    }
+                }
+                start()
+            }
         }
     }
 

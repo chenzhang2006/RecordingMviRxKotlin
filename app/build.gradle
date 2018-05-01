@@ -57,4 +57,7 @@ dependencies {
     testImplementation 'org.jmockit:jmockit:1.22'
     testImplementation 'junit:junit:4.12'
 
+    //Lottie
+    implementation('com.airbnb.android:lottie:2.3.1') { exclude group: 'com.android.support' }
+
 }
