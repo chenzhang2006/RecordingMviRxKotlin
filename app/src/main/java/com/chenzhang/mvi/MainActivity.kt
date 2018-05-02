@@ -3,6 +3,7 @@ package com.chenzhang.mvi
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
+import com.chenzhang.mvi.view.AnotherFragment
 import com.chenzhang.mvi.view.MainFragment
 import com.chenzhang.recording_mvi_rx_kotlin.R
 import org.apache.log4j.Logger
@@ -20,8 +21,17 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().apply {
                 add(R.id.fragment_container, MainFragment(), "mainFragment")
+                addToBackStack("add")
                 commit()
             }
+        }
+    }
+
+    fun navToAnother() {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container, AnotherFragment(), "anotherFragment")
+            addToBackStack("replace")
+            commit()
         }
     }
 

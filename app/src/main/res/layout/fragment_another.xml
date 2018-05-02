@@ -7,28 +7,13 @@
         android:layout_height="match_parent">
 
     <TextView
-            android:text="Page2"
+            android:text="Another Fragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/page2Text"
+            android:id="@+id/anotherText"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
-
-    <Button
-            android:text="Also Watched"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/alsoWatched"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/page2Text"
-            android:layout_marginEnd="148dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="148dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="174dp"/>
-
 </android.support.constraint.ConstraintLayout>

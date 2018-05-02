@@ -69,7 +69,7 @@ class MainFragment : Fragment(), MviView<RecordingsIntent, RecordingsViewState> 
         } else {
             mainFragmentTextView.text = state.recordings.size.toString()
 
-            fragmentViewPager.adapter = SectionPagerAdapter(fragmentManager!!)
+            fragmentViewPager.adapter = SectionPagerAdapter(childFragmentManager!!)
         }
     }
 

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.chenzhang.mvi.MainActivity
 import com.chenzhang.mvi.MviApplication
 import com.chenzhang.mvi.base.MviView
 import com.chenzhang.mvi.recordings.Page2ViewModel
@@ -71,6 +72,10 @@ class Page2Fragment : Fragment(), MviView<RecordingsIntent, RecordingsViewState>
     private fun bind(){
         disposables.add(viewModel.states().subscribe(this::render))
         viewModel.processIntents(intents())
+
+        alsoWatched.setOnClickListener {
+            (activity as MainActivity).navToAnother()
+        }
     }
 
     override fun onDestroy() {
