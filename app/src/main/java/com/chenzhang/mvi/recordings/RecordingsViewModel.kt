@@ -28,6 +28,7 @@ class RecordingsViewModel(
      */
     private val intentsSubject: PublishSubject<RecordingsIntent> = PublishSubject.create()
     private val stateObservable: Observable<RecordingsViewState> = bindIntent()
+    private var latestViewState: RecordingsViewState? = null
     private val LOG = Logger.getLogger(this::class.java)
 
     private fun bindIntent(): Observable<RecordingsViewState> {
@@ -38,7 +39,10 @@ class RecordingsViewModel(
                 .map(this::actionMappedFromIntent)
                 .compose(recordingsIntentProcessors.actionProcessor)
                 .scan(RecordingsViewState.scanInitialState(), reducer)
-                .doOnNext { LOG.debug("Tracking viewState: $it") }
+                .doOnNext {
+                    latestViewState = it
+                    LOG.debug("Tracking viewState: $it")
+                }
                 .replay(1)
                 .autoConnect()
     }
