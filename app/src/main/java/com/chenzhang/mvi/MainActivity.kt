@@ -123,6 +123,8 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         disposables.add(recordingsAdapter.downloadObservable.subscribe { recording ->
             Snackbar.make(contentMainContainer, "downlading ${recording.title}", Snackbar.LENGTH_LONG).show()
         })
+
+        refreshIntentPublisher.doOnSubscribe { disposables.add(it) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
