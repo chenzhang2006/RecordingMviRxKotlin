@@ -10,7 +10,7 @@ import org.apache.log4j.Logger
 
 class MviApplication : Application() {
 
-    private val LOG = Logger.getLogger(this::class.java)
+    private val logger = Logger.getLogger(this::class.java)
 
     companion object {
         lateinit var appComponent: AppComponent
@@ -25,6 +25,6 @@ class MviApplication : Application() {
 
         Log4JConfigurator.configureLogging()
 
-        LOG.debug("getting from library module ${LibraryResource.LIBRARY_NAME}")
+        logger.debug("getting from library module ${LibraryResource.LIBRARY_NAME}")
     }
 }

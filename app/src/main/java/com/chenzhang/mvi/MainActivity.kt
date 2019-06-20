@@ -1,5 +1,6 @@
 package com.chenzhang.mvi
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Build
@@ -29,6 +30,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
+
+/**
+ * Demo Android app to showcase Model-View-Intent(MVI) architecture with RxJava implementing the reactive flow, written in Kotlin and supported by Dagger2
+ *
+ * Detailed documentation at https://github.com/chenzhang2006/RecordingMviRxKotlin or README.md
+ */
+
 class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsViewState> {
 
     @Inject
@@ -41,6 +49,8 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
                 .get(RecordingsViewModel::class.java)
     }
     private val recordingsAdapter: RecordingsAdapter by lazy { RecordingsAdapter() }
+
+    //There are 2 types of refresh gestures: swipe-down and options-menu. Use PublishSubject to merge the two
     private val refreshIntentPublisher = PublishSubject.create<RecordingsIntent.RefreshIntent>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +114,7 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
                 recordingsAdapter.setItems(state.recordings)
             }
             recorderUsage.text = getString(R.string.recorder_usage, state.recorderUsage)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= VERSION_CODES.N) {
                 recorderUsageBar.setProgress(state.recorderUsage, true)
             } else {
                 recorderUsageBar.progress = state.recorderUsage
@@ -112,7 +122,9 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun bind() {
+        //Have to bind output from viewModel to View first, then bind Intents from View->ViewModel
         disposables.add(viewModel.states().subscribe(this::render))
         viewModel.processIntents(intents())
 
@@ -121,7 +133,7 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
         })
 
         disposables.add(recordingsAdapter.downloadObservable.subscribe { recording ->
-            Snackbar.make(contentMainContainer, "downlading ${recording.title}", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(contentMainContainer, "downloading ${recording.title}", Snackbar.LENGTH_LONG).show()
         })
 
         refreshIntentPublisher.doOnSubscribe { disposables.add(it) }

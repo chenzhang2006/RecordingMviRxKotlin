@@ -29,19 +29,19 @@ class RecordingsViewModel(
     private val intentsSubject: PublishSubject<RecordingsIntent> = PublishSubject.create()
     private val stateObservable: Observable<RecordingsViewState> = bindIntent()
     private var latestViewState: RecordingsViewState? = null
-    private val LOG = Logger.getLogger(this::class.java)
+    private val logger = Logger.getLogger(this::class.java)
 
     private fun bindIntent(): Observable<RecordingsViewState> {
         return intentsSubject
-                .doOnNext { LOG.debug("Tracking raw intent $it") }
+                .doOnNext { logger.debug("Tracking raw intent $it") }
                 .initialFilter()
-                .doOnNext { LOG.debug("Tracking filtered intent $it") }
+                .doOnNext { logger.debug("Tracking filtered intent $it") }
                 .map(this::actionMappedFromIntent)
                 .compose(recordingsIntentProcessors.actionProcessor)
                 .scan(RecordingsViewState.scanInitialState(), reducer)
                 .doOnNext {
                     latestViewState = it
-                    LOG.debug("Tracking viewState: $it")
+                    logger.debug("Tracking viewState: $it")
                 }
                 .replay(1)
                 .autoConnect()

@@ -15,7 +15,7 @@ class ApiRepository(private val dataRepository: DataRepository) {
                     .toList()
 
     fun deleteRecording(recording: Recording): Completable {
-        dataRepository.deleteReocrding(recording)
+        dataRepository.deleteRecording(recording)
         return Completable.complete()
     }
 

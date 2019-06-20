@@ -19,9 +19,9 @@ import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.recording_item_collapsed.view.*
 import kotlinx.android.synthetic.main.recording_item_expanded.view.*
 import org.apache.commons.lang3.time.FastDateFormat
-import java.util.*
+import java.lang.IllegalStateException
 
-class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RecordingsAdapter : RecyclerView.Adapter<ViewHolder>() {
     private var items: MutableList<Pair<Recording, Boolean>> = mutableListOf()
     private val deleteSubject = PublishSubject.create<Recording>()
     private val playSubject = PublishSubject.create<Recording>()
@@ -41,22 +41,23 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            if (viewType == ITEM_VIEW_COLLAPSED) {
-                LayoutInflater.from(parent.context)
-                        .inflate(R.layout.recording_item_collapsed, parent, false)
-                        .let { CollapsedItemViewHolder(it) }
-            } else {
-                LayoutInflater.from(parent.context)
-                        .inflate(R.layout.recording_item_expanded, parent, false)
-                        .let { ExpandedItemViewHolder(it) }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+            when (viewType) {
+                ITEM_VIEW_COLLAPSED ->
+                    LayoutInflater.from(parent.context)
+                            .inflate(R.layout.recording_item_collapsed, parent, false)
+                            .let { CollapsedItemViewHolder(it) }
+                else ->
+                    LayoutInflater.from(parent.context)
+                            .inflate(R.layout.recording_item_expanded, parent, false)
+                            .let { ExpandedItemViewHolder(it) }
             }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (holder is CollapsedItemViewHolder) {
-            holder.bind(items[position].first)
-        } else if (holder is ExpandedItemViewHolder) {
-            holder.bind(items[position].first)
+        when (holder) {
+            is CollapsedItemViewHolder -> holder.bind(items[position].first)
+            is ExpandedItemViewHolder -> holder.bind(items[position].first)
+            else -> throw IllegalStateException("wrong viewHolder type is received")
         }
     }
 
@@ -67,8 +68,8 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val ITEM_VIEW_COLLAPSED = 0
         private const val ITEM_VIEW_EXPANDED = 1
-        private val recordingTimeFormatterLong = FastDateFormat.getInstance("MMM d h:mm a", Locale.getDefault())
-        private val recordingTimeFormatterShort = FastDateFormat.getInstance("M/d", Locale.getDefault())
+        private val recordingTimeFormatterLong = FastDateFormat.getInstance("MMM d h:mm a")
+        private val recordingTimeFormatterShort = FastDateFormat.getInstance("M/d")
     }
 
     inner class ExpandedItemViewHolder(item: View) : RecyclerView.ViewHolder(item) {
@@ -98,7 +99,8 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.expandedRecordingTitle.text = recording.title
             itemView.recordingDesc.text = recording.description
             itemView.expandedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
-            itemView.expandedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterLong.format(it)) } ?: ""
+            itemView.expandedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterLong.format(it)) }
+                    ?: ""
         }
 
         private fun LottieAnimationView.animateDownload() {
@@ -136,7 +138,8 @@ class RecordingsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(recording: Recording) {
             itemView.collapsedRecordingTitle.text = recording.title
             itemView.collapsedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
-            itemView.collapsedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterShort.format(it)) } ?: ""
+            itemView.collapsedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterShort.format(it)) }
+                    ?: ""
         }
     }
 

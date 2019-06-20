@@ -16,10 +16,10 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
     val actionProcessor =
             ObservableTransformer<RecordingsAction, RecordingsResult> { actions ->
                 //publish to ConnectableObservable so upstream is subscribed only once and multicast to observers
-                actions.publish { actionObserable ->
+                actions.publish { actionObservable ->
                     Observable.merge<RecordingsResult>(
-                            actionObserable.ofType(RecordingsAction.LoadRecordingsAction::class.java).compose(loadRecordingsProcessor),
-                            actionObserable.ofType(RecordingsAction.DeleteRecordingAction::class.java).compose(deleteRecordingProcessor)
+                            actionObservable.ofType(LoadRecordingsAction::class.java).compose(loadRecordingsProcessor),
+                            actionObservable.ofType(DeleteRecordingAction::class.java).compose(deleteRecordingProcessor)
                     )
                 }
             }
