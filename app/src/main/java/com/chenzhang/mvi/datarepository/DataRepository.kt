@@ -1,5 +1,7 @@
-package com.chenzhang.mvi.data
+package com.chenzhang.mvi.datarepository
 
+import com.chenzhang.mvi.datamodel.Recording
+import com.chenzhang.mvi.datamodel.RecordingType
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -1,7 +1,13 @@
 package com.chenzhang.mvi.recordings
 
-import com.chenzhang.mvi.data.Recording
-import com.chenzhang.mvi.data.RecordingType
+import com.chenzhang.mvi.mvibase.RecordingsIntent
+import com.chenzhang.mvi.mvibase.RecordingsViewState
+import com.chenzhang.mvi.datamodel.Recording
+import com.chenzhang.mvi.datamodel.RecordingType
+import com.chenzhang.mvi.usecase.DeletingInteractor
+import com.chenzhang.mvi.usecase.LoadingInteractor
+import com.chenzhang.mvi.viewmodel.RecordingsIntentProcessors
+import com.chenzhang.mvi.viewmodel.RecordingsViewModel
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.Single

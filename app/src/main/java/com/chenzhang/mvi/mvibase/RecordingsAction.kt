@@ -1,7 +1,6 @@
-package com.chenzhang.mvi.recordings
+package com.chenzhang.mvi.mvibase
 
-import com.chenzhang.mvi.base.MviAction
-import com.chenzhang.mvi.data.Recording
+import com.chenzhang.mvi.datamodel.Recording
 
 /**
  * Model Action types

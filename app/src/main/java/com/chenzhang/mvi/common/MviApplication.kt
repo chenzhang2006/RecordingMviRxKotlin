@@ -1,7 +1,6 @@
-package com.chenzhang.mvi
+package com.chenzhang.mvi.common
 
 import android.app.Application
-import com.chenzhang.mvi.application.Log4JConfigurator
 import com.chenzhang.mvi.injection.AppComponent
 import com.chenzhang.mvi.injection.AppModule
 import com.chenzhang.mvi.injection.DaggerAppComponent

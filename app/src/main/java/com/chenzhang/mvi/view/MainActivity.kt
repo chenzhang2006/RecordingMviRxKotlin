@@ -1,4 +1,4 @@
-package com.chenzhang.mvi
+package com.chenzhang.mvi.view
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -13,12 +13,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.chenzhang.mvi.base.MviView
-import com.chenzhang.mvi.recordings.RecordingsIntent
-import com.chenzhang.mvi.recordings.RecordingsViewModel
-import com.chenzhang.mvi.recordings.RecordingsViewModelFactory
-import com.chenzhang.mvi.recordings.RecordingsViewState
-import com.chenzhang.mvi.view.RecordingsAdapter
+import com.chenzhang.mvi.common.MviApplication
+import com.chenzhang.mvi.mvibase.MviView
+import com.chenzhang.mvi.mvibase.RecordingsIntent
+import com.chenzhang.mvi.viewmodel.RecordingsViewModel
+import com.chenzhang.mvi.viewmodel.RecordingsViewModelFactory
+import com.chenzhang.mvi.mvibase.RecordingsViewState
 import com.chenzhang.recording_mvi_rx_kotlin.R
 import com.chenzhang.recording_mvi_rx_kotlin.R.id.menuRefresh
 import com.chenzhang.recording_mvi_rx_kotlin.R.layout

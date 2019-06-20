@@ -8,7 +8,7 @@
     <string name="play_button_label">Play</string>
     <string name="delete_button_label">Delete</string>
     <string name="content_desc_remove">remove</string>
-    <string name="app_bar_summary">Kotlin, MVI and RxJava</string>
+    <string name="app_bar_summary">Kotlin, MVI, RxJava &amp; Dagger</string>
     <string name="recording_time">Recorded %1$s</string>
     <string name="nav_menu_clicked_message">Navigation menu %1$s selected</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.chenzhang.mvi.application
+package com.chenzhang.mvi.common
 
 import de.mindpipe.android.logging.log4j.LogCatAppender
 import de.mindpipe.android.logging.log4j.LogConfigurator

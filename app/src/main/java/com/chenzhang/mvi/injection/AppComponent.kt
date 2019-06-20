@@ -1,6 +1,6 @@
 package com.chenzhang.mvi.injection
 
-import com.chenzhang.mvi.MainActivity
+import com.chenzhang.mvi.view.MainActivity
 import dagger.Component
 import javax.inject.Singleton
 

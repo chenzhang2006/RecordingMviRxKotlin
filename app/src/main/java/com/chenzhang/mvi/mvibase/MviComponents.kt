@@ -1,4 +1,4 @@
-package com.chenzhang.mvi.base
+package com.chenzhang.mvi.mvibase
 
 import io.reactivex.Observable
 

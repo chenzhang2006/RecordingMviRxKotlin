@@ -1,4 +1,4 @@
-package com.chenzhang.mvi.data
+package com.chenzhang.mvi.datamodel
 
 import java.util.*
 

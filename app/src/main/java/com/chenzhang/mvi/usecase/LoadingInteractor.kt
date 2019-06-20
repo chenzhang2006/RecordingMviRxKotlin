@@ -1,24 +1,16 @@
-package com.chenzhang.mvi.recordings
+package com.chenzhang.mvi.usecase
 
-import com.chenzhang.mvi.data.DataRepository
-import com.chenzhang.mvi.data.Recording
+import com.chenzhang.mvi.datarepository.DataRepository
+import com.chenzhang.mvi.datamodel.Recording
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.concurrent.TimeUnit.SECONDS
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * CLEAN architecture's "Use Case" layer. Typically, this layer does:
- *
- * - Orchestrate and combine results from underlying Data Repositories; Manage business rules, such as polling, filter, zip, concat...
- * - Handle errors, e.g. propagating, retry, omitting
- * - Stateless and re-usable
- */
-
 @Singleton
 class LoadingInteractor @Inject constructor(private val dataRepository: DataRepository)
-    : ILoadingInteractor<Void, List<Recording>, Int> {
+    : RecordingsInteractor.ILoadingInteractor<Void, List<Recording>, Int> {
 
     override fun loadRecordings(): Single<List<Recording>> =
             Observable.fromIterable(dataRepository.loadCurrentRecordings())

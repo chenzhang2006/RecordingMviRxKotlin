@@ -1,7 +1,9 @@
-package com.chenzhang.mvi.recordings
+package com.chenzhang.mvi.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.chenzhang.mvi.usecase.DeletingInteractor
+import com.chenzhang.mvi.usecase.LoadingInteractor
 
 /**
  * Factory for ViewModels

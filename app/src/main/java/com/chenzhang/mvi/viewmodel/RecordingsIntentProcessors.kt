@@ -1,10 +1,14 @@
-package com.chenzhang.mvi.recordings
+package com.chenzhang.mvi.viewmodel
 
-import com.chenzhang.mvi.data.Recording
-import com.chenzhang.mvi.recordings.RecordingsAction.DeleteRecordingAction
-import com.chenzhang.mvi.recordings.RecordingsAction.LoadRecordingsAction
-import com.chenzhang.mvi.recordings.RecordingsResult.DeleteResult
-import com.chenzhang.mvi.recordings.RecordingsResult.LoadingResult
+import com.chenzhang.mvi.mvibase.RecordingsAction
+import com.chenzhang.mvi.datamodel.Recording
+import com.chenzhang.mvi.mvibase.RecordingsAction.DeleteRecordingAction
+import com.chenzhang.mvi.mvibase.RecordingsAction.LoadRecordingsAction
+import com.chenzhang.mvi.mvibase.RecordingsResult
+import com.chenzhang.mvi.mvibase.RecordingsResult.DeleteResult
+import com.chenzhang.mvi.mvibase.RecordingsResult.LoadingResult
+import com.chenzhang.mvi.usecase.DeletingInteractor
+import com.chenzhang.mvi.usecase.LoadingInteractor
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
