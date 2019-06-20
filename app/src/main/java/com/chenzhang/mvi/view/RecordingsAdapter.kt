@@ -1,6 +1,5 @@
 package com.chenzhang.mvi.view
 
-import android.animation.ValueAnimator
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
@@ -13,6 +12,8 @@ import com.chenzhang.mvi.datamodel.RecordingType.MOVIE
 import com.chenzhang.mvi.datamodel.RecordingType.MV
 import com.chenzhang.mvi.datamodel.RecordingType.SPORT
 import com.chenzhang.mvi.datamodel.RecordingType.TV
+import com.chenzhang.mvi.util.animateDownload
+import com.chenzhang.mvi.util.toFormatSafe
 import com.chenzhang.recording_mvi_rx_kotlin.R
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -76,6 +77,14 @@ class RecordingsAdapter : RecyclerView.Adapter<ViewHolder>() {
         private const val ITEM_VIEW_EXPANDED = 1
         private val recordingTimeFormatterLong = FastDateFormat.getInstance("MMM d h:mm a")
         private val recordingTimeFormatterShort = FastDateFormat.getInstance("M/d")
+
+        fun getTypeBadge(recordingType: RecordingType) =
+                when (recordingType) {
+                    MOVIE -> R.drawable.ic_movie_black_24dp
+                    TV -> R.drawable.ic_tv_black_24dp
+                    MV -> R.drawable.ic_mv_black_24dp
+                    SPORT -> R.drawable.ic_sport_black_24dp
+                }
     }
 
     inner class ExpandedItemViewHolder(item: View) : RecyclerView.ViewHolder(item) {
@@ -95,7 +104,7 @@ class RecordingsAdapter : RecyclerView.Adapter<ViewHolder>() {
                 if (!downloading) {
                     /* This is for ONLY DEMO purpose that we simulate the download progress right here. By MVI's unidirectional data flow, View should pass Download intent
                     to business logic, which generate new ViewState then render() into View. Will update this later when I get a chance*/
-                    (it as LottieAnimationView).animateDownload()
+                    (it as LottieAnimationView).animateDownload(itemView)
 
                     downloadSubject.onNext(items[layoutPosition].first)
                     downloading = true
@@ -108,33 +117,10 @@ class RecordingsAdapter : RecyclerView.Adapter<ViewHolder>() {
                 expandedRecordingTitle.text = recording.title
                 recordingDesc.text = recording.description
                 expandedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
-                expandedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterLong.format(it)) }.orEmpty()
+                expandedRecordingTime.text = itemView.context.getString(R.string.recording_time, recording.recordingTime.toFormatSafe(recordingTimeFormatterLong))
             }
         }
 
-        //private extension function for Lottie
-        private fun LottieAnimationView.animateDownload() {
-            setAnimation("download_progress.json", LottieAnimationView.CacheStrategy.Strong)
-            ValueAnimator.ofFloat(0f, 1.0f).setDuration(3000).apply {
-                addUpdateListener { valueAnimator ->
-                    progress = valueAnimator.animatedValue as Float
-
-                    if (progress == 1.0f) {
-                        setAnimation("check_mark.json", LottieAnimationView.CacheStrategy.Strong)
-                        ValueAnimator.ofFloat(0f, 1.0f).setDuration(2000).apply {
-                            addUpdateListener { checkAnimator ->
-                                progress = checkAnimator.animatedValue as Float
-                                if (checkAnimator.animatedValue as Float == 1.0f) {
-                                    itemView.downloadView.visibility = View.GONE
-                                }
-                            }
-                            start()
-                        }
-                    }
-                }
-                start()
-            }
-        }
     }
 
     inner class CollapsedItemViewHolder(item: View) : RecyclerView.ViewHolder(item) {
@@ -151,17 +137,9 @@ class RecordingsAdapter : RecyclerView.Adapter<ViewHolder>() {
             with(itemView) {
                 collapsedRecordingTitle.text = recording.title
                 collapsedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
-                collapsedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterShort.format(it)) }.orEmpty()
+                collapsedRecordingTime.text = itemView.context.getString(R.string.recording_time, recording.recordingTime.toFormatSafe(recordingTimeFormatterShort))
             }
         }
     }
-
-    private fun getTypeBadge(recordingType: RecordingType) =
-            when (recordingType) {
-                MOVIE -> R.drawable.ic_movie_black_24dp
-                TV -> R.drawable.ic_tv_black_24dp
-                MV -> R.drawable.ic_mv_black_24dp
-                SPORT -> R.drawable.ic_sport_black_24dp
-            }
 
 }
