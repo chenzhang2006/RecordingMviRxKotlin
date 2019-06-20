@@ -9,17 +9,19 @@ import org.apache.log4j.PatternLayout
 class Log4JConfigurator {
     companion object {
         fun configureLogging() {
-            val logConfigurator = LogConfigurator()
-            logConfigurator.rootLevel = Level.DEBUG
-            logConfigurator.isUseFileAppender = false
-            // The default pattern is "%m%n" which appends a newline to the message. This newline causes Android Studio
-            // to fail to print the throwable stack trace if it's present, so we're overridding the pattern to drop this
-            // newline in order to fix this.
-            logConfigurator.logCatPattern = "%m"
-            logConfigurator.configure()
+            LogConfigurator().apply {
+                rootLevel = Level.DEBUG
+                isUseFileAppender = false
+                // The default pattern is "%m%n" which appends a newline to the message. This newline causes Android Studio
+                // to fail to print the throwable stack trace if it's present, so we're overridding the pattern to drop this
+                // newline in order to fix this.
+                logCatPattern = "%m"
+                configure()
+            }
 
             /* Forgive this hack. LogConfigurator doesn't provide a direct hook to set the logcat tag */
             val logger = Logger.getRootLogger()
+
             val appenders = logger.allAppenders
             while (appenders.hasMoreElements()) {
                 val appender = appenders.nextElement()

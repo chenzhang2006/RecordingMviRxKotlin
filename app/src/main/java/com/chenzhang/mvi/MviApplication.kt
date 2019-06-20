@@ -13,12 +13,14 @@ class MviApplication : Application() {
     private val logger = Logger.getLogger(this::class.java)
 
     companion object {
+        //holder to Dagger component
         lateinit var appComponent: AppComponent
     }
 
     override fun onCreate() {
         super.onCreate()
 
+        //Dagger2 initialization
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()

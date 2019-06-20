@@ -11,6 +11,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.schedulers.Schedulers
 
+/**
+ * Holders for Rx Transformers, which are applied by ViewModel
+ */
 class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
 
     val actionProcessor =

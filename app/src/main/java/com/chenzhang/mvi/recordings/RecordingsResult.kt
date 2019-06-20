@@ -3,6 +3,9 @@ package com.chenzhang.mvi.recordings
 import com.chenzhang.mvi.base.MviResult
 import com.chenzhang.mvi.data.Recording
 
+/**
+ * Model Result types, such as Loading, ResultData, Failure
+ */
 sealed class RecordingsResult : MviResult {
     sealed class LoadingResult : RecordingsResult() {
         object LoadingInProgress : LoadingResult()

@@ -3,6 +3,9 @@ package com.chenzhang.mvi.recordings
 import com.chenzhang.mvi.base.MviViewState
 import com.chenzhang.mvi.data.Recording
 
+/**
+ * Consolidated ViewState, maintained in ViewModel as "source-of-truth" for View states
+ */
 data class RecordingsViewState(
         val isLoading: Boolean = false,
         val recordings: List<Recording> = emptyList(),

@@ -32,7 +32,9 @@ import javax.inject.Inject
 
 
 /**
- * Demo Android app to showcase Model-View-Intent(MVI) architecture with RxJava implementing the reactive flow, written in Kotlin and supported by Dagger2
+ * This is the main ViewController of this demo application.
+ *
+ * This Demo Android app is to showcase Model-View-Intent(MVI) architecture with RxJava implementing the reactive flow, written in Kotlin and supported by Dagger2
  *
  * Detailed documentation at https://github.com/chenzhang2006/RecordingMviRxKotlin or README.md
  */
@@ -124,7 +126,7 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
 
     @SuppressLint("CheckResult")
     private fun bind() {
-        //Have to bind output from viewModel to View first, then bind Intents from View->ViewModel
+        //Have to bind output from viewModel -> View first, then bind Intents from View -> ViewModel
         disposables.add(viewModel.states().subscribe(this::render))
         viewModel.processIntents(intents())
 
@@ -155,6 +157,8 @@ class MainActivity : AppCompatActivity(), MviView<RecordingsIntent, RecordingsVi
 
     override fun onDestroy() {
         super.onDestroy()
+
+        //release CompositeDisposable
         disposables.dispose()
     }
 

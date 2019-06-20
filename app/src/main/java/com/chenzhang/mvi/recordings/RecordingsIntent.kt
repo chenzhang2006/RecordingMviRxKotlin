@@ -3,6 +3,9 @@ package com.chenzhang.mvi.recordings
 import com.chenzhang.mvi.base.MviIntent
 import com.chenzhang.mvi.data.Recording
 
+/**
+ * Model User-Intent
+ */
 sealed class RecordingsIntent : MviIntent {
     //InitialIntent for the very first intent when screen starts
     object InitialIntent : RecordingsIntent()

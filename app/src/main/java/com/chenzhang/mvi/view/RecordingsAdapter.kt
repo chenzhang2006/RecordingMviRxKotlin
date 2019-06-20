@@ -21,18 +21,24 @@ import kotlinx.android.synthetic.main.recording_item_expanded.view.*
 import org.apache.commons.lang3.time.FastDateFormat
 import java.lang.IllegalStateException
 
+/**
+ * RecyclerView's adapter, to manage View bindings for itemView and pass-through of user gestures
+ */
 class RecordingsAdapter : RecyclerView.Adapter<ViewHolder>() {
     private var items: MutableList<Pair<Recording, Boolean>> = mutableListOf()
     private val deleteSubject = PublishSubject.create<Recording>()
     private val playSubject = PublishSubject.create<Recording>()
     private val downloadSubject = PublishSubject.create<Recording>()
 
+    //expose "Delete" user-action via Subject
     val deleteObservable: Observable<Recording>
         get() = deleteSubject
 
+    //expose "Play" user-action via Subject
     val playObservable: Observable<Recording>
         get() = playSubject
 
+    //expose "Download" user-action via Subject
     val downloadObservable: Observable<Recording>
         get() = downloadSubject
 
@@ -76,6 +82,8 @@ class RecordingsAdapter : RecyclerView.Adapter<ViewHolder>() {
         init {
             itemView.setOnClickListener {
                 items[layoutPosition] = items[layoutPosition].run { first to false }
+
+                //Utilize "transition animation" feature that comes with RecyclerView with #notifyItemChanged
                 notifyItemChanged(layoutPosition)
             }
 
@@ -96,13 +104,15 @@ class RecordingsAdapter : RecyclerView.Adapter<ViewHolder>() {
         }
 
         fun bind(recording: Recording) {
-            itemView.expandedRecordingTitle.text = recording.title
-            itemView.recordingDesc.text = recording.description
-            itemView.expandedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
-            itemView.expandedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterLong.format(it)) }
-                    ?: ""
+            with(itemView) {
+                expandedRecordingTitle.text = recording.title
+                recordingDesc.text = recording.description
+                expandedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
+                expandedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterLong.format(it)) }.orEmpty()
+            }
         }
 
+        //private extension function for Lottie
         private fun LottieAnimationView.animateDownload() {
             setAnimation("download_progress.json", LottieAnimationView.CacheStrategy.Strong)
             ValueAnimator.ofFloat(0f, 1.0f).setDuration(3000).apply {
@@ -131,15 +141,18 @@ class RecordingsAdapter : RecyclerView.Adapter<ViewHolder>() {
         init {
             itemView.setOnClickListener {
                 items[layoutPosition] = items[layoutPosition].run { first to true }
+
+                //Utilize "transition animation" feature that comes with RecyclerView with #notifyItemChanged
                 notifyItemChanged(layoutPosition)
             }
         }
 
         fun bind(recording: Recording) {
-            itemView.collapsedRecordingTitle.text = recording.title
-            itemView.collapsedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
-            itemView.collapsedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterShort.format(it)) }
-                    ?: ""
+            with(itemView) {
+                collapsedRecordingTitle.text = recording.title
+                collapsedRecordingType.setImageResource(getTypeBadge(recording.recordingType))
+                collapsedRecordingTime.text = recording.recordingTime?.let { itemView.context.getString(R.string.recording_time, recordingTimeFormatterShort.format(it)) }.orEmpty()
+            }
         }
     }
 

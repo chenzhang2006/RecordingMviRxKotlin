@@ -17,6 +17,9 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import org.apache.log4j.Logger
 
+/**
+ * ViewModel in MVVM(Model View ViewModel)
+ */
 class RecordingsViewModel(
         private val recordingsIntentProcessors: RecordingsIntentProcessors
 ) : ViewModel(), MviViewModel<RecordingsIntent, RecordingsViewState> {
