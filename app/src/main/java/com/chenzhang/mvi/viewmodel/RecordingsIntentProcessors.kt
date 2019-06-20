@@ -37,7 +37,7 @@ class RecordingsIntentProcessors(private val loadingInteractor: LoadingInteracto
                 action.flatMap {
                     loadingInteractor.loadRecordings()
                             .toObservable()
-                            .zipWith(loadingInteractor.loadRecorderUsage())
+                            .zipWith(loadingInteractor.loadRecorderUsage().toObservable())
                             .map { pair: Pair<List<Recording>, Int> ->
                                 LoadingResult.LoadingSuccess(pair.first, pair.second)
                             }
@@ -55,7 +55,7 @@ class RecordingsIntentProcessors(private val loadingInteractor: LoadingInteracto
                     deletingInteractor.deleteRecording(a.recording)
                             .andThen(loadingInteractor.loadRecordings())
                             .toObservable()
-                            .zipWith(loadingInteractor.loadRecorderUsage())
+                            .zipWith(loadingInteractor.loadRecorderUsage().toObservable())
                             .map { pair: Pair<List<Recording>, Int> ->
                                 DeleteResult.DeleteSuccess(pair.first, pair.second)
                             }

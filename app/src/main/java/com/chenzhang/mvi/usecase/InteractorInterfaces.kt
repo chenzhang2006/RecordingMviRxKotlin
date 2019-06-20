@@ -18,7 +18,7 @@ interface RecordingsInteractor {
 
         fun loadRecordings(): Single<Return1>
 
-        fun loadRecorderUsage(): Observable<Return2>
+        fun loadRecorderUsage(): Single<Return2>
     }
 
     interface IDeleteInteractor<T> : RecordingsInteractor {

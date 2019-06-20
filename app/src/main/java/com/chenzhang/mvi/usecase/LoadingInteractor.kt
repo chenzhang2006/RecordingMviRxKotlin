@@ -18,6 +18,6 @@ class LoadingInteractor @Inject constructor(private val dataRepository: DataRepo
                     .delay(2, SECONDS)
                     .toList()
 
-    override fun loadRecorderUsage(): Observable<Int> = Observable.just(dataRepository.getRecorderUsage()).delay(1, SECONDS)
+    override fun loadRecorderUsage(): Single<Int> = Single.just(dataRepository.getRecorderUsage()).delay(1, SECONDS)
 
 }
