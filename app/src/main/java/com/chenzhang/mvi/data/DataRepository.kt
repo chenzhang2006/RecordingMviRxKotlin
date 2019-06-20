@@ -1,11 +1,15 @@
 package com.chenzhang.mvi.data
 
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * This class mocks data repository; In reality, it should be a resource on network or database
  */
-class DataRepository {
+
+@Singleton
+class DataRepository @Inject constructor() {
 
     private val recordings = mutableListOf(
             Recording(id = asset1Id, title = asset1Title, recordingType = asset1Type, description = asset1Desc, recordingTime = asset1Date),

@@ -1,13 +1,16 @@
 package com.chenzhang.mvi.injection
 
 import android.app.Application
-import com.chenzhang.mvi.data.DataRepository
-import com.chenzhang.mvi.recordings.ApiRepository
+import com.chenzhang.mvi.recordings.DeletingInteractor
+import com.chenzhang.mvi.recordings.LoadingInteractor
 import com.chenzhang.mvi.recordings.RecordingsViewModelFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+/**
+ * Dagger modules where dependencies are provided; Other dependencies are annotated with inline @Injected
+ */
 @Module
 class AppModule(private val application: Application) {
 
@@ -17,14 +20,7 @@ class AppModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun providesRecordingsViewModelFactory(apiRepository: ApiRepository) = RecordingsViewModelFactory(apiRepository)
-
-    @Provides
-    @Singleton
-    fun providesDataRepository() = DataRepository()
-
-    @Provides
-    @Singleton
-    fun providesApiRepository(dataRepository: DataRepository) = ApiRepository(dataRepository)
+    fun providesRecordingsViewModelFactory(loadingInteractor: LoadingInteractor, deletingInteractor: DeletingInteractor)
+            = RecordingsViewModelFactory(loadingInteractor, deletingInteractor)
 
 }

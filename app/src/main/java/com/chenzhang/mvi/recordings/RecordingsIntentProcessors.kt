@@ -14,7 +14,8 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Holders for Rx Transformers, which are applied by ViewModel
  */
-class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
+class RecordingsIntentProcessors(private val loadingInteractor: LoadingInteractor,
+                                 private val deletingInteractor: DeletingInteractor) {
 
     val actionProcessor =
             ObservableTransformer<RecordingsAction, RecordingsResult> { actions ->
@@ -30,9 +31,9 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
     private val loadRecordingsProcessor =
             ObservableTransformer<LoadRecordingsAction, LoadingResult> { action ->
                 action.flatMap {
-                    apiRepository.loadRecordings()
+                    loadingInteractor.loadRecordings()
                             .toObservable()
-                            .zipWith(apiRepository.loadRecorderUsage())
+                            .zipWith(loadingInteractor.loadRecorderUsage())
                             .map { pair: Pair<List<Recording>, Int> ->
                                 LoadingResult.LoadingSuccess(pair.first, pair.second)
                             }
@@ -47,10 +48,10 @@ class RecordingsIntentProcessors(private val apiRepository: ApiRepository) {
     private val deleteRecordingProcessor =
             ObservableTransformer<DeleteRecordingAction, DeleteResult> { action ->
                 action.flatMap { a ->
-                    apiRepository.deleteRecording(a.recording)
-                            .andThen(apiRepository.loadRecordings())
+                    deletingInteractor.deleteRecording(a.recording)
+                            .andThen(loadingInteractor.loadRecordings())
                             .toObservable()
-                            .zipWith(apiRepository.loadRecorderUsage())
+                            .zipWith(loadingInteractor.loadRecorderUsage())
                             .map { pair: Pair<List<Recording>, Int> ->
                                 DeleteResult.DeleteSuccess(pair.first, pair.second)
                             }
