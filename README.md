@@ -2,11 +2,13 @@
 
 <img src="https://user-images.githubusercontent.com/17072625/39311626-707d6020-493b-11e8-8289-aacb9969d4e2.png" alt="screenshot"/>
 
+Demo Video: https://www.youtube.com/watch?v=eZ-89Ni6hng&feature=youtu.be
+
 ### Summary
 
-This application is an sample Android app to showcase **Model-View-Intent(MVI)** architecture with **RxJava** to implement the reactive chain, written in **Kotlin**. It features:
+This application is an sample Android app(started Spring 2018, updated Summer 2019) to showcase **Model-View-Intent(MVI)** architecture with **RxJava** to implement the reactive chain, written in **Kotlin**. It features:
 
-* [Kotin](https://kotlinlang.org)
+* [Kotlin](https://kotlinlang.org)
 * Inspired by [Mosby MVI blog series](http://hannesdorfmann.com/android/mosby3-mvi-1) (but I am NOT using the framework Mosby in my application)
 * [RxJava2](https://github.com/ReactiveX/RxJava), [RxAndroid](https://github.com/ReactiveX/RxAndroid), [RxBinding](https://github.com/JakeWharton/RxBinding), [RxKotlin](https://github.com/ReactiveX/RxKotlin)
 * [Android Architecture Components - ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel.html)
