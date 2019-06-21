@@ -1,6 +1,5 @@
-package com.chenzhang.mvi.recordings
+package com.chenzhang.mvi.util
 
-import com.chenzhang.mvi.util.toFormatSafe
 import org.apache.commons.lang3.time.FastDateFormat
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -2,6 +2,7 @@ package com.chenzhang.mvi.datarepository
 
 import com.chenzhang.mvi.datamodel.Recording
 import com.chenzhang.mvi.datamodel.RecordingType
+import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,13 +23,13 @@ class DataRepository @Inject constructor() {
             Recording(id = asset6Id, title = asset6Title, recordingType = asset6Type, description = asset6Desc, recordingTime = asset6Date)
     )
 
-    fun loadCurrentRecordings(): List<Recording> = recordings.toList()
+    fun loadCurrentRecordings(): Single<List<Recording>> = Single.just(recordings.toList())
 
     fun deleteRecording(recording: Recording) {
         recordings.remove(recording)
     }
 
-    fun getRecorderUsage() = recordings.size * 12
+    fun getRecorderUsage(): Single<Int> = Single.just(recordings.size * 12)
 
     companion object {
 

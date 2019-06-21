@@ -1,4 +1,4 @@
-package com.chenzhang.mvi.recordings
+package com.chenzhang.mvi.common
 
 import org.apache.log4j.ConsoleAppender
 import org.apache.log4j.Level
